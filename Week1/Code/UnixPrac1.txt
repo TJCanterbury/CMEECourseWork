@@ -1,0 +1,19 @@
+#FASTA Exercise Week 1
+# starting in ~/doc, copy fasta data from TheMulQuaBio to week 1 data:
+# cp -r ../../../TheMulQuaBio/content/data/fasta ../Data/
+
+#1  How many lines for each file under the fasta directory
+wc -l ../Data/fasta/*
+
+#2  print lines excluding line 1 for ecoli file, activate head if you don't want it all
+tail -n +2 ../Data/fasta/E.coli.fasta 
+
+#3  count of pattern 'ATGC', excluding first lines and new lines
+tail -n +2 ../Data/fasta/E.coli.fasta | tr -d '\n' | grep -o 'ATGC' | wc -l
+
+#4  compute AT/GC ratio 
+#Use bc or R in terminal
+#bc:
+bc -l <<< "scale=7;($(tail -n +2 ../Data/fasta/E.coli.fasta | tr -d '\n' | grep -o 'A' | wc -l)+$(
+tail -n +2 ../Data/fasta/E.coli.fasta | tr -d '\n' | grep -o 'T' | wc -l))/($( tail -n +2 ../Data/fasta/E.coli.fasta | tr -d '\n' | grep -o 'G' | wc -l)+$(
+ tail -n +2 ../Data/fasta/E.coli.fasta | tr -d '\n' | grep -o 'C' | wc -l))"
