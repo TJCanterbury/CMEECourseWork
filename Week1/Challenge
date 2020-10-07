@@ -1,1 +1,10 @@
-#Command Challenge
+# Bash Command Challenge, what does this do?
+
+find . -type f -exec ls -s {} \; | sort -n | head -10
+
+# ANSWER
+#   find regular files within a given dir and list them and their file sizes, 
+#   take this list and sort it by file size based on the string numerical values
+#   and then only print the first 10 items of this list.
+#   in Summary list the 10 smallest files in a directory, in size order and with
+#   sizes shown
