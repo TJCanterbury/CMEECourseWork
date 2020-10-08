@@ -7,7 +7,6 @@
 #              not to specify your own file path
 # Arguments:  1 -> .csv file
 # Date: Oct 2020
-NewFile="$1.spaced.txt" #makes new file for output
 
 if [ $# -ne 1 ]
   then
@@ -15,13 +14,18 @@ if [ $# -ne 1 ]
     exit
 fi
 
+x="$1"
+y=${x%.csv}
+z=${y##*/}
+NewFile="../../Results/Spaced_$z.csv"
+
 echo "Suggested new file path: $NewFile"
 read -p "Would you like to specify your own path for your new space deliminated file? (Yy/Nn)" -n 1 -r #gives you choice, self explanatory
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
      echo
-     echo "Enter your desired file path (eg. '../../Data/worse.txt'):"
+     echo "Enter your desired file path (eg. '../../Results/worse.txt'):"
      read NewFile
 
 fi

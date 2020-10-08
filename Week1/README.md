@@ -29,3 +29,5 @@ Hi, You've made it to my week 1 CMEE coursework.
 ## In challenges you will find my answer to the bash command challenge in the BashChallenge.txt
 
 ## Sandbox is for personal fun
+
+## Results dir for output files of scripts with this functionality
