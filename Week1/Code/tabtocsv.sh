@@ -1,9 +1,9 @@
 #!/bin/bash
+
 # Author: Tristan JC tjc19@ic.ac.uk
 # Script: tabtocsv.sh
 # Description: substitute tabs for csv in a file
-#
-# Saves the output into a .csv file
+#              Saves the output into a .csv file
 # Arguments: 1 -> tab deliminated file
 # Date: Oct 2020
 

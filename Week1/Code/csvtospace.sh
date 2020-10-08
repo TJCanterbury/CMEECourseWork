@@ -2,13 +2,20 @@
 
 # Author: Tristan JC tjc19@ic.ac.uk
 # Script: cvstospace.sh
-# Description: hell script that takes a comma separated values and converts 
+# Description: Shell script that takes a .csv file and converts 
 #              it into a new space separated values file. You can choose whether or
 #              not to specify your own file path
 # Arguments:  1 -> .csv file
 # Date: Oct 2020
-NewFile="../Data/worse.csv" #makes new file for output
+NewFile="$1.spaced.txt" #makes new file for output
 
+if [ $# -ne 1 ]
+  then
+    echo "No or too many arguments supplied, try again with 1 file you wish converted"
+    exit
+fi
+
+echo "Suggested new file path: $NewFile"
 read -p "Would you like to specify your own path for your new space deliminated file? (Yy/Nn)" -n 1 -r #gives you choice, self explanatory
 
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -20,9 +27,11 @@ then
 fi
 echo
 touch $NewFile
-echo "Creating worse version of your file ' $1'"
+echo "Creating space separated values version of your file ' $1'"
 cat $1 | tr -s "," " " >  $NewFile
-echo "Done. You will find your new space deliminated file in $NewFile"
-echo "Here is a teaser of what it will look like:"
+echo "Done. You will find your new file in $NewFile"
+echo
+echo "Here is the head of your new file:"
 head $NewFile
+echo
 exit

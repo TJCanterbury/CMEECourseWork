@@ -1,5 +1,6 @@
 #!/bin/bash
-# Authgor: Tristan JC tjc19@ic.ac.uk
+
+# Author: Tristan JC tjc19@ic.ac.uk
 # Script: boilerplate.sh
 # Desc: Simple boilerplate for shell scripts
 # Arguments: none
