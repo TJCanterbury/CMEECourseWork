@@ -14,4 +14,5 @@ tail -n +2 ../../Data/fasta/E.coli.fasta | tr -d '\n' | grep -o 'ATGC' | wc -l
 #4  compute AT/GC ratio 
 #Use bc or R in terminal
 #my preference is R just because I like it and it will show the calculation being done:
-R --vanilla <<< "$(tail -n +2 ../../Data/fasta/E.coli.fasta | grep -o 'A\|T' | wc -l)/$( tail -n +2 ../../Data/fasta/E.coli.fasta | grep -o 'G\|C' | wc -l)"
+
+bc -l <<< "scale=7;$(tail -n +2 ../../Data/fasta/E.coli.fasta | grep -o 'A\|T' | wc -l)/$( tail -n +2 ../../Data/fasta/E.coli.fasta | grep -o 'G\|C' | wc -l)"
