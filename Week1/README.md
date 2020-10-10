@@ -1,9 +1,8 @@
-# Welcome
-Hi, You've made it to my week 1 CMEE coursework.  
+# Welcome to Week1
 In challenges you will find my answer to the bash command challenge in the BashChallenge.txt, Sandbox is for personal fun, Results dir for output files of scripts with this functionality.  
 For the Code and Data directories I will go into more detail:  
 
-## In Code you shall find a directory for each chapter of the book:
+**In Code you shall find a directory for each chapter of the book:**  
 
 **In the UNIXScript dir you shall find the UnixPrac1.txt for completion of the FASTA exercise which does the following:**  
  **1**   Print how many lines for each file under the fasta directory  
@@ -30,7 +29,7 @@ For the Code and Data directories I will go into more detail:
  FirstBiblio.bib | Holds the bibliography for the FirstExample.tex file
  FirstExample.tex | My first .tex file, somewhat discusses Einstein
   
-## In the data directory you will directories and data fils holding relevant data to the above scripts such as:
+**In the Data directory you will directories and data files holding relevant data to the above scripts such as:**  
  File or Directory       | Description
  ------------- | -------------
  fasta | Directory containing .fasta files holding E.coli and other DNA sequence data
