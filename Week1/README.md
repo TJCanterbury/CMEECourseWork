@@ -8,7 +8,6 @@ For the Code and Data directories I will go into more detail:
 **In the UNIXScript dir you shall find the UnixPrac1.txt which does the following:**
  Script       | Description
  ------------- | -------------
- 
  UnixPrac1.txt |  **1**   Print how many lines for each file under the fasta directory  
                   **2**   Print lines excluding line 1 for ecoli file, activate head if you don't want it all  
                   **3**   Print count of pattern 'ATGC', excluding first lines and new lines  
