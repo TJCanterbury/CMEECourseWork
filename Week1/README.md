@@ -2,7 +2,7 @@
 In challenges you will find my answer to the bash command challenge in the BashChallenge.txt, Sandbox is for personal fun, Results dir for output files of scripts with this functionality. In the Data directory you will directories and data files holding relevant data to the scripts in Code and for use in Sandbox
 For the Code directory I will go into more detail:  
 
-**In Code you shall find a directory for each chapter of the book:**  
+### In Code you shall find a directory for each chapter of the book:
 
 **In the UNIXScript dir you shall find the UnixPrac1.txt for completion of the FASTA exercise which does the following:**  
  **1**   Print how many lines for each file under the fasta directory  
