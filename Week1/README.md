@@ -13,22 +13,27 @@ Hi, You've made it to my week 1 CMEE coursework.
  Script       | Description
  ------------- | -------------
  boilerplate.sh | A boilerplate for all shell scripts
- ConcatenateTwoFiles.sh  | prints the concatenation of 2 given files
- CountLines.sh | prints the line count for a given file
- csvtospace.sh | converts a .csv into a space separated values file of a given name or otherwise the same name but with added extensions
- MyExampleScript.sh | says hello to user
- tabtocsv.sh | converts a tab separated values file into a .csv file
- tiff2mng.sh | converts a .tiff file into a .png file
- variables.sh | lets you set a variable and makes a variable through adding 2 given numerical values together
+ ConcatenateTwoFiles.sh  | Prints the concatenation of 2 given files
+ CountLines.sh | Prints the line count for a given file
+ csvtospace.sh | Converts a .csv into a space separated values file of a given name or otherwise the same name but with added extensions
+ MyExampleScript.sh | Says hello to user
+ tabtocsv.sh | Converts a tab separated values file into a .csv file
+ tiff2mng.sh | Converts a .tiff file into a .png file
+ variables.sh | Lets you set a variable and makes a variable through adding 2 given numerical values together
 
 ### In the LaTex dir you shall find the following files:
- Script       | Description
+ File       | Description
  ------------- | -------------
- CompileLaTeX.sh | which compiles a given .tex file and produces a pdf
- FirstBiblio.bib | which holds the bibliography for the FirstExample.tex file
- FirstExample.tex | which is my first .tex file, somewhat discusses Einstein
+ CompileLaTeX.sh | Compiles a given .tex file and produces a pdf
+ FirstBiblio.bib | Holds the bibliography for the FirstExample.tex file
+ FirstExample.tex | My first .tex file, somewhat discusses Einstein
 
-## In the data directory you will find relevant data to the above scripts such as .fasta files for the UNIXScript in the fasta dir, Temperatures files for use with the csvtospace.sh and spawannxs.txt which I simply used in the sandbox for practicing grep
+## In the data directory you will directories and data fils holding relevant data to the above scripts such as:
+ File or Directory       | Description
+ ------------- | -------------
+ fasta | Directory containing .fasta files holding E.coli and other DNA sequence data
+ Temperatures | Directory containing commma deliminated .csv files holding Temperature data(?)
+ spawannxs.txt | Contains endangered species data for practicing bash commands in the Sandbox dir
 
 ## In challenges you will find my answer to the bash command challenge in the BashChallenge.txt
 
