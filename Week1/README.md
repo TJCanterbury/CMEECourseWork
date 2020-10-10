@@ -5,7 +5,7 @@ For the Code and Data directories I will go into more detail:
 
 ## In Code you shall find a directory for each chapter of the book:
 
-**In the UNIXScript dir you shall find the UnixPrac1.txt for completion of the FASTA exercise which does the following:**
+**In the UNIXScript dir you shall find the UnixPrac1.txt for completion of the FASTA exercise which does the following:**  
  **1**   Print how many lines for each file under the fasta directory  
  **2**   Print lines excluding line 1 for ecoli file, activate head if you don't want it all  
  **3**   Print count of pattern 'ATGC', excluding first lines and new lines  
