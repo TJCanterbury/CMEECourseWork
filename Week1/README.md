@@ -1,6 +1,6 @@
 # Welcome to Week1
-In challenges you will find my answer to the bash command challenge in the BashChallenge.txt, Sandbox is for personal fun, Results dir for output files of scripts with this functionality.  
-For the Code and Data directories I will go into more detail:  
+In challenges you will find my answer to the bash command challenge in the BashChallenge.txt, Sandbox is for personal fun, Results dir for output files of scripts with this functionality. In the Data directory you will directories and data files holding relevant data to the scripts in Code and for use in Sandbox
+For the Code directory I will go into more detail:  
 
 **In Code you shall find a directory for each chapter of the book:**  
 
@@ -28,11 +28,4 @@ For the Code and Data directories I will go into more detail:
  CompileLaTeX.sh | Compiles a given .tex file and produces a pdf
  FirstBiblio.bib | Holds the bibliography for the FirstExample.tex file
  FirstExample.tex | My first .tex file, somewhat discusses Einstein
-  
-**In the Data directory you will directories and data files holding relevant data to the above scripts such as:**  
- File or Directory       | Description
- ------------- | -------------
- fasta | Directory containing .fasta files holding E.coli and other DNA sequence data
- Temperatures | Directory containing commma deliminated .csv files holding temperature data(?)
- spawannxs.txt | Contains endangered species data for practicing bash commands in the Sandbox dir
   
