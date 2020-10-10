@@ -22,6 +22,8 @@ Hi, You've made it to my week 1 CMEE coursework.
  variables.sh | lets you set a variable and makes a variable through adding 2 given numerical values together
 
 ### In the LaTex dir you shall find the following files:
+ Script       | Description
+ ------------- | -------------
  CompileLaTeX.sh | which compiles a given .tex file and produces a pdf
  FirstBiblio.bib | which holds the bibliography for the FirstExample.tex file
  FirstExample.tex | which is my first .tex file, somewhat discusses Einstein
