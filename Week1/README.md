@@ -1,6 +1,6 @@
 # Welcome to Week1
 In challenges you will find my answer to the bash command challenge in the BashChallenge.txt, Sandbox is for personal fun, Results dir for output files of scripts with this functionality. In the Data directory you will directories and data files holding relevant data to the scripts in Code and for use in Sandbox
-For the Code directory I will go into more detail:  
+For the Code directory I will go into more detail.
 
 ### In Code you shall find a directory for each chapter of the book:
 
