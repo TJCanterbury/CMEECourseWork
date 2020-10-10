@@ -10,17 +10,25 @@
 
 if [ $# -ne 1 ]
   then
-    echo "No or too many arguments supplied, try again with 1 file you wish converted"
+    echo "wrong number of arguments, try again with 1 file you wish converted"
     exit
 fi
 
-x="$1"
-y=${x%.csv}
-z=${y##*/}
-NewFile="../../Results/Spaced_$z.csv"
+if [ ${1: -4} != ".csv" ]
+  then
+     read -p "$1 is not labelled as a .csv file, continue anyway? (Yy/Nn)"
+     if [[ $REPLY =~ ^[Nn]$ ]]
+       then
+         exit
+     fi
+fi
 
-echo "Suggested new file path: $NewFile"
-read -p "Would you like to specify your own path for your new space deliminated file? (Yy/Nn)" -n 1 -r #gives you choice, self explanatory
+x=${1%.csv}
+y=${x##*/}
+NewFile="../../Results/Spaced_$y.csv"
+
+echo "Where new file will be: $NewFile"
+read -p "Would you like to specify your own file path instead? (Yy/Nn)" -n 1 -r #gives you , self explanatory
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -31,11 +39,11 @@ then
 fi
 echo
 touch $NewFile
-echo "Creating space separated values version of your file ' $1'"
+echo "Creating space separated values version of $1"
 cat $1 | tr -s "," " " >  $NewFile
-echo "Done. You will find your new file in $NewFile"
-echo
-echo "Here is the head of your new file:"
+echo "Done."
+echo -e "You will find your new file here: $NewFile \n"
+echo -e "Here is a teaser of your new file:\n"
 head $NewFile
 echo
 exit
