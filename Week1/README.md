@@ -5,13 +5,16 @@ For the Code and Data directories I will go into more detail:
 
 ## In Code you shall find a directory for each chapter of the book:
 
-### In the UNIXScript dir you shall find the UnixPrac1.txt which does the following:
- 1  Print how many lines for each file under the fasta directory  
- 2  Print lines excluding line 1 for ecoli file, activate head if you don't want it all  
- 3  Print count of pattern 'ATGC', excluding first lines and new lines  
- 4  Calculates and prints AT/GC ratio  
+**In the UNIXScript dir you shall find the UnixPrac1.txt which does the following:**
+ Script       | Description
+ ------------- | -------------
+ 
+ UnixPrac1.txt |  **1**   Print how many lines for each file under the fasta directory  
+                  **2**   Print lines excluding line 1 for ecoli file, activate head if you don't want it all  
+                  **3**   Print count of pattern 'ATGC', excluding first lines and new lines  
+                  **4**   Calculates and prints AT/GC ratio  
   
-### In the ShellScripts dir you shall find the following files:
+**In the ShellScripts dir you shall find the following files:**
  Script       | Description
  ------------- | -------------
  boilerplate.sh | A boilerplate for all shell scripts
@@ -23,7 +26,7 @@ For the Code and Data directories I will go into more detail:
  tiff2mng.sh | Converts a .tiff file into a .png file
  variables.sh | Lets you set a variable and makes a variable through adding 2 given numerical values together
   
-### In the LaTex dir you shall find the following files:
+**In the LaTex dir you shall find the following files:**
  File       | Description
  ------------- | -------------
  CompileLaTeX.sh | Compiles a given .tex file and produces a pdf
