@@ -24,5 +24,5 @@ fi
 for f in *.tiff;
 	do
 		echo "Converting $f";
-		convert "$f" "$(basename "$f$ .tif).jpg";
+		convert "$f" "$(basename "$f$ .tif).png";
 	done
