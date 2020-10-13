@@ -1,3 +1,3 @@
 for i in range(x):
-    if i > 3:
-        print(i)
+	if i > 3:
+		print(i)
