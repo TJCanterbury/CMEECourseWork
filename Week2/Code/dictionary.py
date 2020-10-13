@@ -27,6 +27,6 @@ print(taxa_dic)
 
 # or:
 # but I don't fully understand this one as it is internet sourced so not using it yet XD
- print("\n".join("{}\t{}".format(k, v) for k, v in taxa_dic.items()))
+# print("\n".join("{}\t{}".format(k, v) for k, v in taxa_dic.items()))
         
 
