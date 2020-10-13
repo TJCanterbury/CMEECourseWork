@@ -13,6 +13,7 @@ For the Code directory I will go into more detail.
 **In the ShellScripts dir you shall find the following files:**
  Script       | Description
  ------------- | -------------
+ UnixPrac1.txt |  **1** Print how many lines for each file under the fasta directory **2** Print lines excluding line 1 for ecoli file, activate head if you don't want it all **3** Print count of pattern 'ATGC', excluding first lines and new lines **4** Calculates and prints AT/GC ratio  
  boilerplate.sh | A boilerplate for all shell scripts
  ConcatenateTwoFiles.sh  | Prints the concatenation of 2 given files
  CountLines.sh | Prints the line count for a given file
@@ -21,10 +22,6 @@ For the Code directory I will go into more detail.
  tabtocsv.sh | Converts a tab separated values file into a .csv file
  tiff2mng.sh | Converts a .tiff file into a .png file
  variables.sh | Lets you set a variable and makes a variable through adding 2 given numerical values together
-  
-**In the LaTex dir you shall find the following files:**
- File       | Description
- ------------- | -------------
  CompileLaTeX.sh | Compiles a given .tex file and produces a pdf
  FirstBiblio.bib | Holds the bibliography for the FirstExample.tex file
  FirstExample.tex | My first .tex file, somewhat discusses Einstein
