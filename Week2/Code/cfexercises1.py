@@ -4,8 +4,10 @@
 __author__ = 'Tristan Canterbury (tjc19@ic.ac.uk)'
 __version__ = '0.0.1'
 
+## imports ##
 import sys
 
+## functions ##
 def foo_1(x=25): # returns the square root of x
     return x ** 0.5
 
