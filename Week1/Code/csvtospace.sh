@@ -28,7 +28,7 @@ y=${x##*/}
 NewFile="../Results/Spaced_$y.csv"
 
 echo "Where new file will be: $NewFile"
-read -p "Would you like to specify your own file path instead? (Yy/Nn)" -n 1 -r #gives you , self explanatory
+read -p "Would you like to specify your own file path instead? (Yy/Nn)" -n 1 -r # self explanatory
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
