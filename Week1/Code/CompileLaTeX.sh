@@ -5,6 +5,16 @@
 # Description: compiles tex file giving you a pdf
 # Arguments: 1 tex file
 # Date: 8 Oct 2020
+if [ $# -ne 1 ]
+    then
+        echo "missing or too many arguments, try again with a single .tex file"
+        exit
+fi
+if [ ${1: -4} != ".tex" ]
+    then
+        read -p "$1 is not labelled as a .tex file, try again with a single .tex file"
+        exit
+fi
 
 x=$1
 y=${x%.tex}
@@ -25,3 +35,5 @@ rm *.nav
 rm *.out
 rm *.snm
 rm *.toc
+rm *.bbl
+rm *.blg
