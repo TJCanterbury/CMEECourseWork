@@ -8,6 +8,7 @@ __version__ = '0.0.1'
 
 ## imports ##
 import sys
+#may need to install Biopython
 from Bio import SeqIO
 import pdb; pdb.set_trace()
 
