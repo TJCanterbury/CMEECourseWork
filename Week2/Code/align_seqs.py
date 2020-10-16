@@ -10,18 +10,17 @@ __version__ = '0.0.1'
 import sys
 #may need to install Biopython
 from Bio import SeqIO
-import pdb; pdb.set_trace()
 
 ## functions ##
-def parseq(x):
+def parseq(x="../Data/multifas.fasta"):
     seqs = list()
     for i in SeqIO.parse(x, "fasta"): 
         seqs.append(str(i.seq))
     return seqs
-pdb.set_trace()
+
 # Assign the longer sequence s1, and the shorter to s2
 # l1 is length of the longest, l2 that of the shortest
-seqs = parseq(sys.argv[1])
+seqs = parseq()
 seq1 = seqs[0]
 seq2 = seqs[1]
 l1 = len(seq1)
@@ -34,7 +33,6 @@ else:
     s2 = seq1
     l1, l2 = l2, l1 # swap the two lengths
 
-pdb.set_trace()
 
 # A function that computes a score by returning the number of matches starting
 # from arbitrary startpoint (chosen by user)
@@ -58,12 +56,6 @@ def calculate_score(s1, s2, l1, l2, startpoint):
 
     return score
 
-pdb.set_trace()
-
-# Test the function with some example starting points:
-# calculate_score(s1, s2, l1, l2, 0)
-# calculate_score(s1, s2, l1, l2, 1)
-# calculate_score(s1, s2, l1, l2, 5)
 
 # now try to find the best match (highest score) for the two sequences
 my_best_align = None
@@ -75,8 +67,6 @@ for i in range(l1): # Note that you just take the last alignment with the highes
         my_best_align = "." * i + s2 # think about what this is doing!
         my_best_score = z 
 
-
-pdb.set_trace()
 
 def main(argv):
     parseq(sys.argv[1])
