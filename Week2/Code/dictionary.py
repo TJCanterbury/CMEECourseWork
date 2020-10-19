@@ -14,9 +14,6 @@ taxa = [ ('Myotis lucifugus','Chiroptera'),
 # derived from  taxa so that it maps order names to sets of taxa. 
 # E.g. 'Chiroptera' : set(['Myotis lucifugus']) etc.  
 
-#
-def is_this_x(x, this):
-        return name == order
 
 taxa_dic = {}
 for species in taxa:
