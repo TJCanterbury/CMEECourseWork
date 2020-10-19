@@ -139,7 +139,7 @@ missing or too many arguments, try again with 2 files you wish concatenated and 
 
 Code ran without errors
 
-Time consumed = 0.00352s
+Time consumed = 0.00463s
 
 ======================================================================
 Inspecting script file tiff2png.sh...
@@ -190,7 +190,7 @@ No or too many arguments supplied, try again with 1 file you wish converted
 
 Code ran without errors
 
-Time consumed = 0.00440s
+Time consumed = 0.00425s
 
 ======================================================================
 Inspecting script file UnixPrac1.txt...
@@ -306,7 +306,7 @@ No or too many arguments supplied, try again with 1 file you wish the line count
 
 Code ran without errors
 
-Time consumed = 0.00621s
+Time consumed = 0.00417s
 
 ======================================================================
 Inspecting script file FirstBiblio.bib...
@@ -397,7 +397,7 @@ wrong number of arguments, try again with 1 file you wish converted
 
 Code ran without errors
 
-Time consumed = 0.00693s
+Time consumed = 0.00419s
 
 ======================================================================
 Inspecting script file CompileLaTeX.sh...
@@ -459,7 +459,7 @@ missing or too many arguments, try again with a single .tex file
 
 Code ran without errors
 
-Time consumed = 0.00582s
+Time consumed = 0.00925s
 
 ======================================================================
 Inspecting script file boilerplate.sh...
@@ -499,7 +499,7 @@ This is a shell script!
 
 Code ran without errors
 
-Time consumed = 0.01000s
+Time consumed = 0.00627s
 
 ======================================================================
 Inspecting script file FirstExample.tex...
@@ -579,7 +579,7 @@ No or too many arguments supplied, try again with 1 file you wish converted
 
 Code ran without errors
 
-Time consumed = 0.00802s
+Time consumed = 0.01115s
 
 ======================================================================
 Inspecting script file MyExampleScript.sh...
@@ -617,7 +617,7 @@ Hello mhasoba
 
 Code ran without errors
 
-Time consumed = 0.00908s
+Time consumed = 0.00650s
 
 ======================================================================
 ======================================================================
