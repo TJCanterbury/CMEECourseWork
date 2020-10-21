@@ -21,11 +21,10 @@ def parseq(x):
 # Assign the longer sequence s1, and the shorter to s2
 # l1 is length of the longest, l2 that of the shortest
 
-def ordseq(x):
+def ordseq(x): 
 	seqs = parseq(x)
 	seq1 = seqs[0]
-	seq2 = seqs[1]
-	global s1, s2, l1, l2
+	seq2 = seqs[1] 
 	l1 = len(seq1)
 	l2 = len(seq2)
 	if l1 >= l2:
@@ -52,11 +51,7 @@ def calculate_score(s1, s2, l1, l2, startpoint):
 				matched = matched + "-"
 
 	# some formatted output
-	print("." * startpoint + matched)           
-	print("." * startpoint + s2)
-	print(s1)
-	print(score) 
-	print(" ")
+	print("Testing startpoint: ", startpoint, " Score = ", score, end="\r")
 
 	return score
 
@@ -72,17 +67,23 @@ def bestalig(s1, s2, l1, l2):
 			my_best_score = z  
 	f=open("../Results/bestalig.txt", "w+")
 	f.write("Best alignment: %s\n" % my_best_align) 
-	f.write("                %s\n" % s1)
+	f.write("                %s\n" % s1) 
 	f.write("Alignment score: %d" % my_best_score)
 	f.close()
+
+	print("Done! You will find your aligned sequences at '../Results/bestalig.txt'")
 	return 0
 
 
 def main(argv):
-	if len(argv)==2:
+	if len(argv) == 1:
+		print("no arguments given, using test argument '../Data/multifas.fasta'")
+		s=ordseq("../Data/multifas.fasta")
+		bestalig(s[0], s[1], s[2], s[3])
+	elif len(argv)==2:
 		if argv[1].endswith('.fasta'):
-			ordseq(argv[1])
-			bestalig(s1, s2, l1, l2)
+			s=ordseq(argv[1])
+			bestalig(s[0], s[1], s[2], s[3])
 		else:
 			print("Improper arguments given, program takes 1 fasta file")
 	else:
