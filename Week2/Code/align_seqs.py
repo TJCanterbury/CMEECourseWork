@@ -13,6 +13,7 @@ from Bio import SeqIO
 
 ## functions ##
 def parseq(x):
+	"""parses the sequences from a given .fasta file"""
 	seqs = list() 
 	for i in SeqIO.parse(x, "fasta"): 
 		seqs.append(str(i.seq))
@@ -22,6 +23,7 @@ def parseq(x):
 # l1 is length of the longest, l2 that of the shortest
 
 def ordseq(x): 
+	"""Takes 2 sequences from 1 .fasta file and puts them in size order and gives their respective lengths"""
 	seqs = parseq(x)
 	seq1 = seqs[0]
 	seq2 = seqs[1] 
@@ -40,6 +42,7 @@ def ordseq(x):
 # A function that computes a score by returning the number of matches starting
 # from arbitrary startpoint (chosen by user)
 def calculate_score(s1, s2, l1, l2, startpoint):
+	"""calculates the alignment score fror a given alignment"""
 	matched = "" # to hold string displaying alignements
 	score = 0
 	for i in range(l2):
@@ -56,6 +59,7 @@ def calculate_score(s1, s2, l1, l2, startpoint):
 	return score
 
 def bestalig(s1, s2, l1, l2):
+	"""finds one of the best of all possible alignments"""
 	# now try to find the best match (highest score) for the two sequences
 	my_best_align = None
 	my_best_score = -1
