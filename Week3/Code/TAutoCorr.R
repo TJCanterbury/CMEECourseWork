@@ -1,16 +1,23 @@
-load("../Data/KeyWestAnnualMeanTemperature.RData")                                            
-head(ats)                                                                                     
-str(ats)
-plot(ats)
+# load old data
+load("../Data/KeyWestAnnualMeanTemperature.RData")         
 
-corts <- rep(NA, (nrow(ats)-1))
-for ( i in 2:nrow(ats) ){
-    print(i)
-    corts[i-1] <- cor(ats[i-1:i,2], ats[i-1:i,1])
-    print(corts)
-}
-corts[1]
-corts
-?cor
-cor(ats[1:2,2], ats[1:2,1])
-ats[1:2,2]
+#find the autocorrelation by cor of misalligned by 1 copies of vector
+t0 <- ats[1:(nrow(ats)-1),2]
+t1 <- ats[2:(nrow(ats)),2]
+corTrue <- cor(t0,t1)
+
+
+# add to number_bigger whenever a a random permutation of the data gives a stronger correlation
+number_bigger <- 0
+for ( i in 1:10000 ){ 
+    t0 <- sample(ats[,2], size = nrow(ats)-1)
+    t1 <- sample(ats[,2], size = nrow(ats)-1)
+    corFalse <- cor(t0,t1)
+    #print(paste("corFalse: ", corFalse))
+    if (corFalse > corTrue ){
+        number_bigger = number_bigger + 1
+    }
+    }
+#calculate p value
+p = number_bigger/10000
+print(paste( "The p value for this correlation = ", p))
