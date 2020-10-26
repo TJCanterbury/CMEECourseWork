@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+
+\title{Autocorrelation in weather}
+\author{Tristan Canterbury}
+\date{}
+
+\begin{document}
+  \maketitle
+
+  \begin{abstract}
+    Here I analysed yearly temperature data for Key West, Florida for the 20th century. I found that for this location the temperature of a given years is significantly
+    dependent on the temperature of the previous year. However the correlation is weak and so I'd argue that the predictive power of this model is poor. We also see
+    a moderate and statistically significant increase in temperature over the 100 year period, which may be relevant for any meta analysis for measuring global temperature
+    changes.
+
+  \end{abstract}
+
+  \section{Introduction}
+    Whilst the weather can often seem eratic and unpredictable, especially day to day here in the UK, over greater spatial and temporal scales we tend to expect otherwise. 
+    Here I test whether the weather in Key West, Florida has shown year to year continuity in it's mean ambient temperature, using an autocorrelation method. 
+
+
+  \section{Materials \& Methods}
+  By finding the correlation between 2 sample sequences of the temperature data, t0 and t1, of size n-1 where n is the number of years, and misalligning them 
+  by one year I could find the correlation between each year and the year that followed. I then needed to test the significance of this correlation by finding 
+  the probability that 2 randomized samples of the data of the same size would show a stronger correlation and using 100,000 permutations of this exercise to get 
+  for a more accurate estimate.
+
+  I also used cor.test to find the correlation between temperature and the year for the whole timescale just out of interest and for comparison.
+
+  \section{Results}
+  I found the correlation between successive yearly temperatures to be 0.3261697 and in this test only a 45 out of 100,000 permutations had a stronger correlation 
+  giving a p-value of 4.5e-4. 
+  A correlation of aprox. 0.3262 is not particularly strong as it means only approximately 11\% (r\textsuperscript{2} = 0.106) 
+  of the variance in temperature is explainable by this correlation.
+  However with a p-value of 4.5e-4 it is a statistically significant positive correlation.
+
+  Meanwhile the pearson's product-moment correlation for year against temperature shows a moderate positive correlation of 0.533 and a p-value of 1.123e-8 which is very statistically significant.
+
+  \section{Discussion}
+  It seems clear that successive yearly temperatures in Key West are dependent upon one another to some extent. This means that a high mean temperature in one year predicts that the 
+  next year may be similarly hot but the weakness of the correlation suggests that you should still expect large amounts of variance in temperature between years. So the predictive power 
+  of this model is poor.
+
+  Meanwhile we see that there is a stronger and more significant correlation over the longer time scale of a hundred years, showing that at greater temporal scales 
+  we see a more predictable pattern in climate change, here showing a gradual increase in temperafture. This may be relevant for any meta analysis for measuring global temperature
+  changes.
+
+\end{document}

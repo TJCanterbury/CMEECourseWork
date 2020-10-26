@@ -9,7 +9,7 @@ corTrue <- cor(t0,t1)
 
 # add to number_bigger whenever a a random permutation of the data gives a stronger correlation
 number_bigger <- 0
-for ( i in 1:10000 ){ 
+for ( i in 1:100000 ){ 
     t0 <- sample(ats[,2], size = nrow(ats)-1)
     t1 <- sample(ats[,2], size = nrow(ats)-1)
     corFalse <- cor(t0,t1)
@@ -19,5 +19,5 @@ for ( i in 1:10000 ){
     }
     }
 #calculate p value
-p = number_bigger/10000
+p = number_bigger/100000
 print(paste( "The p value for this correlation = ", p))
