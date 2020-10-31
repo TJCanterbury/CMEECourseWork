@@ -2,7 +2,7 @@ import csv
 
 # Read a file containing:
 # 'Species','Infraorder','Family','Distribution','Body mass male (Kg)'
-f=open('../../Data/testcsv.csv', 'r')
+f=open('../Data/testcsv.csv', 'r')
 
 csvread = csv.reader(f)
 temp = []
