@@ -1,0 +1,6 @@
+TempResp<- read.csv("../Data//ThermRespData.csv", header = T) 
+plot(TempResp$OriginalTraitValue~ TempResp$ConTemp )
+library(lme4)
+mod <- lmer(OriginalTraitValue ~ ConTemp + (1|ID), data = TempResp)
+summary(mod)
+plot(mod)
