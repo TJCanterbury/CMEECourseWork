@@ -23,11 +23,21 @@ write.csv(PredSumm, "../Results/PP_Results.csv")
 ############# Make sub plots ##################
 # Open pdf for exporting Predator sub plots
 pdf("../Results/Pred_Subplots.pdf", 11.7, 8.3)
+par(mfrow = c(2,3))
+for (i in 1:nlevels(Pred$Type.of.feeding.interaction)){
+    Ins <- subset(Pred, Type.of.feeding.interaction == levels(Pred$Type.of.feeding.interaction)[i])
+    hist(Ins$Log10.predator.mass, xlab = "Predator Mass (g)", main = levels(Pred$Type.of.feeding.interaction)[i])
+}
 plot(Pred$Log10.predator.mass~Pred$Type.of.feeding.interaction, ylab = "log10 Predator Mass (g)", xlab = "Type of feeding interaction", col = "#ff6f6f")
 graphics.off(); 
 
 # Open pdf for exporting Predator sub plots
 pdf("../Results/Prey_Subplots.pdf", 11.7, 8.3)
+par(mfrow = c(2,3))
+for (i in 1:nlevels(Pred$Type.of.feeding.interaction)){
+    Ins <- subset(Pred, Type.of.feeding.interaction == levels(Pred$Type.of.feeding.interaction)[i])
+    hist(Ins$Log10.prey.mass, xlab = "Predator Mass (g)", main = levels(Pred$Type.of.feeding.interaction)[i])
+}
 plot(Pred$Log10.prey.mass~Pred$Type.of.feeding.interaction, ylab = "log10 Prey Mass (g)", xlab = "Type of feeding interaction", col = "#d0ff93")
 graphics.off();
 
