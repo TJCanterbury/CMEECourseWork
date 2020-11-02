@@ -1,3 +1,4 @@
+""" buggy code example """
 def makeabug(x):
     y = x**4
     z = 0
