@@ -1,4 +1,4 @@
-# Welcome to Week2
+# Welcome to Week3
 Sandbox is for personal fun and in the Data directory you will find files holding relevant data to the scripts in Code and for use in Sandbox
 For the Code directory I will go into more detail.
 
