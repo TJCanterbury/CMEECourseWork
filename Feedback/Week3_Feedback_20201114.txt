@@ -179,7 +179,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.21495s
+Time consumed = 0.21758s
 
 ======================================================================
 Inspecting script file browse.R...
@@ -233,7 +233,7 @@ debug: browser()
 
 Code ran without errors or warnings
 
-Time consumed = 0.24946s
+Time consumed = 0.21987s
 
 ======================================================================
 Inspecting script file preallocate.R...
@@ -292,7 +292,7 @@ Output (only first 500 characters):
  [1]  1  2  3  4  5  6  7  8  9 10
 96 bytes
    user  system elapsed 
-  0.017   0.008   0.024 
+   0.02    0.00    0.02 
  [1]  1 NA NA NA NA NA NA NA NA NA
 96 bytes
  [1]  1  2 NA NA NA NA NA NA NA NA
@@ -306,7 +306,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.26152s
+Time consumed = 0.23124s
 
 ======================================================================
 Inspecting script file plotLin.R...
@@ -496,6 +496,7 @@ Output (only first 500 characters):
 
 
 **********************************************************************
+[1] "Mean of this sample was: 0.312903273355168"
 
 **********************************************************************
 
@@ -569,16 +570,16 @@ Output (only first 500 characters):
 **********************************************************************
 [1] "Stochastic Ricker takes:"
    user  system elapsed 
-  0.273   0.016   0.288 
+  0.255   0.020   0.275 
 [1] "Vectorized Stochastic Ricker takes:"
    user  system elapsed 
-  0.022   0.000   0.022 
+   0.02    0.00    0.02 
 
 **********************************************************************
 
 Code ran without errors or warnings
 
-Time consumed = 0.58809s
+Time consumed = 0.53870s
 
 ======================================================================
 Inspecting script file TAutoCorr.R...
@@ -617,13 +618,13 @@ Output (only first 500 characters):
 
 
 **********************************************************************
-[1] "The p value for this correlation =  0.00053"
+[1] "The p value for this correlation =  0.00051"
 
 **********************************************************************
 
 Code ran without errors or warnings
 
-Time consumed = 8.56817s
+Time consumed = 7.87340s
 
 ======================================================================
 Inspecting script file boilerplate.R...
@@ -663,7 +664,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.19670s
+Time consumed = 0.18055s
 
 ======================================================================
 Inspecting script file apply1.R...
@@ -693,18 +694,18 @@ Output (only first 500 characters):
 
 
 **********************************************************************
- [1] -0.2295078  0.2214470  0.3526743  0.3326243 -0.4670853 -0.1302689
- [7]  0.3100907 -0.1543832 -0.2223637 -0.2420004
- [1] 1.0047663 0.5870768 1.0566871 0.2634504 0.4019799 1.4846654 0.9385994
- [8] 0.9395459 1.1798182 0.1656548
- [1] -0.302859289 -0.479895047 -0.015871041 -0.312844409 -0.001650029
- [6]  0.220621817  0.330855804  0.259297264  0.046731367  0.026840615
+ [1] -0.34022277 -0.18803616 -0.18353281  0.08767389 -0.71269533  0.09733626
+ [7] -0.06698257 -0.01704078 -0.24192204  0.34128185
+ [1] 1.5129076 0.8090504 0.3163325 1.5423913 1.3362012 2.2396132 1.0688314
+ [8] 1.2915089 0.9491856 0.8802394
+ [1]  0.27065528  0.14025893 -0.59464493 -0.18800502 -0.89926598  0.75069325
+ [7]  0.17575961 -0.05963134 -0.37055819 -0.44940207
 
 **********************************************************************
 
 Code ran without errors or warnings
 
-Time consumed = 0.17765s
+Time consumed = 0.16853s
 
 ======================================================================
 Inspecting script file PP_Regress.R...
@@ -904,9 +905,8 @@ Output (only first 500 characters):
 [6,] "Agrostis gigantea"    ""   
 **********************************************************************
 
-Code ran without errors or warnings
-
-Time consumed = 30.00851s
+Encountered error or warning:
+Loading required package: reshape2
 
 ======================================================================
 Inspecting script file control_flow.R...
@@ -988,7 +988,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.26830s
+Time consumed = 0.20510s
 
 ======================================================================
 Inspecting script file Vectorize1.R...
@@ -1024,7 +1024,7 @@ Output (only first 500 characters):
 **********************************************************************
 [1] "Using loops, the time taken is:"
    user  system elapsed 
-  0.080   0.004   0.084 
+  0.076   0.004   0.080 
 [1] "Using the in-built vectorized function, the time taken is:"
    user  system elapsed 
   0.001   0.000   0.001 
@@ -1033,7 +1033,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.36395s
+Time consumed = 0.32215s
 
 ======================================================================
 Inspecting script file sample.R...
@@ -1120,24 +1120,24 @@ Output (only first 500 characters):
 **********************************************************************
 [1] "The loopy, non-preallocation approach takes:"
    user  system elapsed 
-  0.026   0.011   0.038 
+  0.036   0.000   0.036 
 [1] "The loopy, but with preallocation approach takes:"
    user  system elapsed 
-  0.019   0.001   0.018 
+  0.015   0.000   0.016 
 [1] "The loopy, non-preallocation approach on a list takes:"
    user  system elapsed 
-  0.015   0.000   0.014 
+  0.015   0.000   0.015 
 [1] "The vectorized sapply approach takes:"
    user  system elapsed 
-  0.014   0.000   0.014 
+  0.011   0.000   0.011 
 [1] "The vectorized lapply approach takes:"
    user  system elapsed 
-  0.012   0.000   0.
+  0.011   0.000   0.
 **********************************************************************
 
 Code ran without errors or warnings
 
-Time consumed = 0.45178s
+Time consumed = 0.41286s
 
 ======================================================================
 Inspecting script file apply2.R...
@@ -1162,18 +1162,18 @@ Output (only first 500 characters):
 
 
 **********************************************************************
-            [,1]        [,2]        [,3]       [,4]       [,5]         [,6]
- [1,]  131.47772  0.87072706 -2.82331868  0.3217733  0.9276704 -0.697098621
- [2,]   40.46363  0.42781262 -0.52686726 -1.1441401 -1.5007631  0.292770352
- [3,]   95.41664 -0.15152838  2.06478929 -0.7632826 -1.0804063  0.314960501
- [4,]   62.99008 -0.75427211 -1.25593628 -2.3348460 -1.5939944  2.403168859
- [5,]   91.48584 -0.03687869 -0.22732914  0.1109749  0.6058681 -0.630265105
- [6,]   94.98204  0.53186460  1.55053102 -0.5
+             [,1]        [,2]       [,3]       [,4]      [,5]         [,6]
+ [1,] -0.17390480  117.592594  33.351779 -1.0292077 -70.41521  -10.3536327
+ [2,]  0.54378008  -85.174199 -35.398286  0.5562971 -13.40208  -94.7776458
+ [3,] -0.04388252   71.104896  -4.358786  1.1923528  81.07802  -17.3236330
+ [4,] -3.60122214   91.368884  26.261973  0.6058213 -33.85382  126.0375834
+ [5,] -1.02496191   44.153804 235.902460 -0.3950502 -71.89041    0.8567942
+ [6,] -0.87738876    9.209901 119.783477 -1.5237270
 **********************************************************************
 
 Code ran without errors or warnings
 
-Time consumed = 0.19960s
+Time consumed = 0.18451s
 
 ======================================================================
 Inspecting script file Ricker.R...
@@ -1212,7 +1212,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.23989s
+Time consumed = 0.23522s
 
 ======================================================================
 Inspecting script file break.R...
@@ -1253,7 +1253,7 @@ i equals  9
 
 Code ran without errors or warnings
 
-Time consumed = 0.19229s
+Time consumed = 0.17553s
 
 ======================================================================
 Inspecting script file next.R...
@@ -1284,7 +1284,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.19847s
+Time consumed = 0.18480s
 
 ======================================================================
 Inspecting script file R_conditionals.R...
@@ -1346,7 +1346,7 @@ Output (only first 500 characters):
 
 Code ran without errors or warnings
 
-Time consumed = 0.19259s
+Time consumed = 0.16729s
 
 ======================================================================
 Inspecting script file CompileLaTeX.sh...
@@ -1408,7 +1408,7 @@ missing or too many arguments, try again with a single .tex file
 
 Code ran without errors or warnings
 
-Time consumed = 0.00441s
+Time consumed = 0.00495s
 
 ======================================================================
 Inspecting script file Girko.R...
@@ -1620,9 +1620,16 @@ Output (only first 500 characters):
 [6,] "Agrostis gigantea"    ""   
 **********************************************************************
 
-Code ran without errors or warnings
-
-Time consumed = 30.00852s
+Encountered error or warning:
+Loading required package: tidyverse
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+✔ ggplot2 3.3.2     ✔ purrr   0.3.4
+✔ tibble  3.0.3     ✔ dplyr   1.0.1
+✔ tidyr   1.1.1     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.5.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
 
 ======================================================================
 Inspecting script file Autocorrelation.tex...
@@ -1702,15 +1709,15 @@ Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
 
 Code ran without errors or warnings
 
-Time consumed = 0.91906s
+Time consumed = 0.80241s
 
 ======================================================================
 ======================================================================
 Finished running scripts
 
-Ran into 8 errors or warnings
+Ran into 10 errors or warnings
 
-Total time used: 80.72s 
+Total time used: 37.41s 
 
 ======================================================================
 
