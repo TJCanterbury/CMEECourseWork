@@ -7,3 +7,4 @@
 *.syncte* 
 *~ 
 *.tmp
+*/Results/*
