@@ -56,7 +56,7 @@ plot(scho$OriginalTraitValue~scho$ConTemp)
 lines(scho$ConTemp, predict(mod), col = "red")
 max(scho$ConTemp)
 
-
+ 
 
 
 
