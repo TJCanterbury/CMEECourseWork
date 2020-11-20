@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""Unoptimised script for squaring a list and making a list of a string"""
 def my_squares(iters):
     out = []
     for i in range(iters):

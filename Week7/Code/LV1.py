@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Some functions exemplifying the use of control statements"""
+"""Script for Lotka-Voltera modelling without carrying capacity"""
 __author__ = 'Tristan Canterbury (tjc19@ic.ac.uk)'
 __version__ = '0.0.1'
 
@@ -30,6 +30,7 @@ def main(argv):
     C0 = 5 
     RC0 = np.array([R0, C0])
     pops, infodict = integrate.odeint(dCR_dt, RC0, t, full_output=True)
+    
     #plotting
     f1 = p.figure()
     p.plot(t, pops[:,0], 'g-', label='Resource density') # Plot

@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python3
+""" Buncha regex examples in python """
 match = re.search(r'2' , "it takes 2 to tango")
 match.group()
 

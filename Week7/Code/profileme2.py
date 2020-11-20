@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""Attempt at optimising the profileme.py script for squaring a list and making a list of a string"""
 import numpy as np
 def my_squares(iters):
     out = np.array(range(iters)) ** 2
