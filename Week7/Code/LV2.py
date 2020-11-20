@@ -10,7 +10,6 @@ import sys
 import numpy as np
 import scipy.integrate as integrate
 import matplotlib.pylab as p
-from matplotlib.offsetbox import AnchoredText as ax
 
 ## functions ##
 def dCR_dt(pops, t=0, r = 1, a = 0.1, z = 1.5, e = 0.75, K = 50):
