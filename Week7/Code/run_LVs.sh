@@ -6,7 +6,5 @@
 # Arguments: none
 # Date: Nov 2020
 
-ipython3 -i -c "
-%run -p LV1.py 
-%run -p LV2.py
-"
+python3 -m cProfile LV1.py
+python3 -m cProfile LV2.py
