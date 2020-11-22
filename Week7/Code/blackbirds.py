@@ -19,7 +19,7 @@ text = text.decode('ascii', 'ignore') # Now decode back to string
 # Now extend this script so that it captures the Kingdom, Phylum and Species
 # name for each species and prints it out to screen neatly.
 
-re.findall(r'\sKingdom\s(\w*)\s.*?Phylum\s(\w*)\s.*?Species\s(\w*\s\w*?)\s', text) 
+print(re.findall(r'\sKingdom\s(\w*)\s.*?Phylum\s(\w*)\s.*?Species\s(\w*\s\w*?)\s', text))
 
 # Hint: you may want to use re.findall(my_reg, text)... Keep in mind that there
 # are multiple ways to skin this cat! Your solution could involve multiple

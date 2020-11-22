@@ -35,14 +35,14 @@ def find_paths(pattern=r'^C', root='~', files = True, subdirs = True):
                     FilesDirsStartingWithC.append(subprocess.os.path.join(dirpath, fi))
     return(FilesDirsStartingWithC)
 
-find_paths()
+print(find_paths())
   
 #################################
 # Get files and directories in your home/ that start with either an 
 # upper or lower case 'C'
 
 # Type your code here:
-find_paths(pattern = r'^c')
+print(find_paths(pattern = r'^c'))
 
 #################################
 # Get only directories in your home/ that start with either an upper or 
@@ -50,4 +50,4 @@ find_paths(pattern = r'^c')
 
 # Type your code here:
 
-find_paths(pattern = r'^c', files=False)
+print(find_paths(pattern = r'^c', files=False))

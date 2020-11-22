@@ -14,7 +14,7 @@ For the Code directory I will go into more detail.
  profileme2.py | Attempt at optimising the profileme.py script for squaring a list and making a list of a string
  regexs.py | Buncha regex examples in python
  run_fmr_R.py | Runs the fmr_R.R script via a python subprocess
- run_LVs.py | Runs LV1.py and LV2.py and profiles them via the ipython %run -p method
+ run_LVs.py | Run LV1.py and LV2.py profile using cprofile via python3
  TestR.py | Runs TestR.R script via python subprocess
  TestR.R | R script that says hello!
  timeitme.py | Used for profiling the profileme scripts via the timeit method
