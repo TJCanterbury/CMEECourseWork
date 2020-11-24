@@ -3,7 +3,7 @@ plot(TempResp$OriginalTraitValue~ TempResp$ConTemp )
 library(lme4)
 
 #Quadratic lm model of id 110
-data_subset = subset(TempResp, TempResp$ID==110)
+data_subset = subset(TempResp, TempResp$ID==7)
 data_subset$ConTemp2 <- data_subset$ConTemp^2
 mod <- lm(OriginalTraitValue ~ ConTemp + ConTemp2, data = data_subset)
 summary(mod)
@@ -24,7 +24,6 @@ lines(data_subset$ConTemp, predict(mod), type = "l")
 ## Attempt to standardize response curves so that all data can be used (Sucks)
 library(tidyverse)
 Tem <- TempResp %>%
-    filter(StandardisedTraitName == "net photosynthesis rate")%>%
     group_by(ID) %>%
     mutate(StaVal = OriginalTraitValue/mean(OriginalTraitValue), ConTemp = ConTemp/mean(ConTemp), ConTemp2 = ConTemp^2, ConTemp3 = ConTemp^3) 
 
