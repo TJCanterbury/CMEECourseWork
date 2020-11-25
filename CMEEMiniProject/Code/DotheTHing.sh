@@ -5,12 +5,12 @@
 # Arguments: 
 # Date: Oct 2020
 
-#python3 Modelit.py '../Data/ThermRespData.csv' 'Line'
-#python3 Modelit.py '../Data/ThermRespData.csv' 'Quadratic'
-#python3 Modelit.py '../Data/ThermRespData.csv' 'Cubic'
-#python3 Modelit.py '../Data/ThermRespData.csv' 'Briere'
-#python3 Modelit.py '../Data/ThermRespData.csv' 'Schoolfield'
+python3 Modelit.py '../Data/ThermRespData.csv' 'Line'
+python3 Modelit.py '../Data/ThermRespData.csv' 'Quadratic'
+python3 Modelit.py '../Data/ThermRespData.csv' 'Cubic'
+python3 Modelit.py '../Data/ThermRespData.csv' 'Briere'
+python3 Modelit.py '../Data/ThermRespData.csv' 'Schoolfield'
 
-#Rscript Seethething.R
+Rscript Seethething.R
 
 bash CompileLaTeX.sh Temp.tex 

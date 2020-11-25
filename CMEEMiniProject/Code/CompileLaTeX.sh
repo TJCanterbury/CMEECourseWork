@@ -41,5 +41,3 @@ rm *.bbl
 rm *.blg
 rm *.fls
 rm *.fdb*
-rm *.tex
-
