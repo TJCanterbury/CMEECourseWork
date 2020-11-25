@@ -13,4 +13,4 @@
 
 #Rscript Seethething.R
 
-bash CompileLaTeX.sh TempResp.tex 
+bash CompileLaTeX.sh Temp.tex 
