@@ -82,23 +82,26 @@ def residuals_school(params, t, data):
     #Return residuals
     return model - data
 
+
 def Starting_vals_school(x):
-    
+    """ Find starting values for Schoolfield model parameters """
     m = (x.OriginalTraitValue[1] - x.OriginalTraitValue[0])/(x.ConTemp[1] - x.ConTemp[0])
-    c = x.OriginalTraitValue[0]- (m * x.ConTemp[0])
-    B0 = m*283.15 + c
-
-    Tl = (0.5*max(x.OriginalTraitValue))/m -c
-    Th = Tl
-
-
+    c = x.OriginalTraitValue[0]- (abs(m) * x.ConTemp[0])
+    B0 = abs(m)*283.15 + c
+    mAx = max(x.OriginalTraitValue)
+    Opt = float(x.ConTemp[x.OriginalTraitValue == mAx])
+    y = x[x.ConTemp >= Opt]
+    w = x[x.ConTemp <= Opt]
+    Tl = int(w.ConTemp[w.OriginalTraitValue == min(w.OriginalTraitValue, key=lambda z:abs(z - mAx/2))])
+    Th = int(y.ConTemp[y.OriginalTraitValue == min(y.OriginalTraitValue, key=lambda z:abs(z - mAx/2))])
+    
     params_school = Parameters()
-    params_school.add('B0', value = B0, max = B0*1.5+1, min = B0*0.5)
-    params_school.add('El', value = 0.5, min = 0)
-    params_school.add('Eh', value = 0.5, min = 0)
-    params_school.add('Tl', value = Tl, max = Tl*1.5, min = 0)
-    params_school.add('Th', value = Th, max = Th*1.5, min = 0)
-    params_school.add('E', value = 1, min = 0)
+    params_school.add('B0', value = B0)
+    params_school.add('El', value = 1)
+    params_school.add('Eh', value = 1)
+    params_school.add('Tl', value = Tl)
+    params_school.add('Th', value = Th)
+    params_school.add('E', value = 1)
     return params_school
 
 # Model builder
@@ -125,85 +128,73 @@ def Lin_Mod(Data, Type):
     for i in np.unique(Data.ID):
         try:
             #Subset data by ID
-            if (len(Data[Data.ID == i]) >= 6) :
-                tmp = Data[Data.ID == i]
-                tmp = tmp.reset_index(drop=True)
-                if Type == 'Schoolfield':
-                    params = Starting_vals_school(tmp)
-                if Type == 'Briere':
-                    params = Parameters()
-                    params.add('B', value = 1)
-                    params.add('t0', value = min(tmp.ConTemp))
-                    params.add('tm', value = max(tmp.ConTemp))
+            tmp = Data[Data.ID == i]
 
-                #create minimzer object
-                minner = Minimizer(resid, params, fcn_args=(tmp.ConTemp, (tmp.OriginalTraitValue)))
-                
-                #Perform the minimization
-                fit_Mod = minner.minimize(method = 'leastsq')
-                
-                #extract parameter values
-                par_dict = fit_Mod.params.valuesdict().values()
-                par = np.array(list(par_dict), dtype = float)
+            tmp = tmp.reset_index(drop=True)
+            if Type == 'Schoolfield':
+                params = Starting_vals_school(tmp)
+                if (len(Data[Data.ID == i]) < 6) :
+                    continue
+            if Type == 'Briere':
+                params = Parameters()
+                params.add('B', value = 1)
+                params.add('t0', value = min(tmp.ConTemp))
+                params.add('tm', value = max(tmp.ConTemp))
+                if min(tmp.OriginalTraitValue) < 0 :
+                    tmp.OriginalTraitValue = tmp.OriginalTraitValue + abs(min(tmp.OriginalTraitValue))
             
-                #Construct the fitted polynomial equation
-                my_poly = np.poly1d(par)
-
-                #Compute predicted values
-                ypred = my_poly(tmp.ConTemp)
-
-                #Calculate residuals
-                residuals = ypred - tmp.OriginalTraitValue
-                
-                #calculate R squared
-                RSS = sum(residuals**2)  # Residual sum of squares
-                TSS = sum(tmp.OriginalTraitValue - tmp.OriginalTraitValue.mean()**2)  # Total sum of squares
-                RSq = 1 - (RSS/TSS)
-                n = len(tmp.ConTemp) #set sample size
-                pPow = 4
-
-                #Calculate AIC
-                AIC = n + 2 + n * np.log((2 * math.pi) / n) +  n * np.log(RSS) + 2 * pPow
-                
-                #adjust index
-                j = i-1
-                print(i)
-                #Transform these into an array
-                paras[j,:] = np.append(par, [RSq, AIC])
+            tmp = tmp.reset_index(drop=True)
+            
+            #create minimzer object
+            minner = Minimizer(resid, params, fcn_args=(tmp.ConTemp, (tmp.OriginalTraitValue)))
+                    
+            #Perform the minimization
+            fit_Mod = minner.minimize(method = 'leastsq')
+                    
+            #extract parameter values
+            par_dict = fit_Mod.params.valuesdict().values()
+            par = np.array(list(par_dict), dtype = float)
+            
+            #adjust index
+            j = i-1
+            print("Modelling ID: ", i, " Model Type: ", Type, end="\r")
+            #Transform these into an array
+            paras[j,:] = np.append(par, [fit_Mod.redchi, fit_Mod.aic])
         except:
             pass
     return(paras)
 
 def main(argv):
     """ Build Linear model and prints parameter estimates and AIC """
-
+    fields = ['ID', 'ConTemp', 'OriginalTraitValue']
     #read in data
-    TempResp = pd.read_csv(argv[1])
+    TempResp = pd.read_csv(argv[1], usecols = fields)
 
     #drop Na values from OriginalTraitValue
     TempResp['ConTemp'] = 273.15+TempResp['ConTemp']
-    
-    if argv[2] == 'Briere':
-        TempResp = TempResp[TempResp['ConTemp'] > 0]
-        TempResp = TempResp[TempResp['OriginalTraitValue'] > 0]
     
     # argv[1] = 'Line' for straight line model, 'Quadratic' for quadratic model, 'Cubic' for cubic model
     paras = Lin_Mod(TempResp, argv[2])
     if argv[2] == 'Briere':
         Results = pd.DataFrame(data = paras, columns=["B0", "t0", "tm", "RSq", "AICS"])
         Results.to_csv("../Results/Briere.csv")
+        print("You will find your results at ../Results/Briere.csv")
     if argv[2] == 'Schoolfield':
         Results = pd.DataFrame(data = paras, columns=["B0", "El", "Eh", "Tl", "Th", "E", "RSq", "AIC"])
         Results.to_csv("../Results/Schoolfield.csv")
+        print("You will find your results at ../Results/Schoolfield.csv")
     if argv[2] == 'Line':
         Results = pd.DataFrame(data = paras, columns=["m", "c", "RSq", "AIC"])
         Results.to_csv("../Results/Line.csv")
+        print("You will find your results at ../Results/Line.csv")
     if argv[2] == 'Quadratic':
         Results = pd.DataFrame(data = paras, columns=["a", "b", "c", "RSq", "AIC"])
         Results.to_csv("../Results/Quadratic.csv")
+        print("You will find your results at ../Results/Quadratic.csv")
     if argv[2] == 'Cubic':
         Results = pd.DataFrame(data = paras, columns=["a", "b", "c", "d", "RSq", "AIC"])
         Results.to_csv("../Results/Cubic.csv")
+        print("You will find your results at ../Results/Cubic.csv")
     print(paras)
     
     return 0
