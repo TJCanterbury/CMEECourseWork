@@ -113,6 +113,7 @@ def Lin_Mod(Data, Type):
     if Type == 'Schoolfield':
         paras = np.zeros((max(np.unique(Data.ID)),8))
         resid = residuals_school
+        #Data.ConTemp = 1/ (Data.ConTemp*k)
     if Type == 'Line':
         paras = np.zeros((max(np.unique(Data.ID)),4))
         resid = residuals_lin
@@ -132,9 +133,10 @@ def Lin_Mod(Data, Type):
 
             tmp = tmp.reset_index(drop=True)
             if Type == 'Schoolfield':
-                params = Starting_vals_school(tmp)
                 if (len(Data[Data.ID == i]) < 6) :
                     continue
+                params = Starting_vals_school(tmp)
+
             if Type == 'Briere':
                 params = Parameters()
                 params.add('B', value = 1)
@@ -146,7 +148,7 @@ def Lin_Mod(Data, Type):
             tmp = tmp.reset_index(drop=True)
             
             #create minimzer object
-            minner = Minimizer(resid, params, fcn_args=(tmp.ConTemp, (tmp.OriginalTraitValue)))
+            minner = Minimizer(resid, params, fcn_args=(tmp.ConTemp, tmp.OriginalTraitValue))
                     
             #Perform the minimization
             fit_Mod = minner.minimize(method = 'leastsq')
@@ -154,6 +156,18 @@ def Lin_Mod(Data, Type):
             #extract parameter values
             par_dict = fit_Mod.params.valuesdict().values()
             par = np.array(list(par_dict), dtype = float)
+            if i == 110:
+                result = tmp.OriginalTraitValue + fit_Mod.residual
+                t_vec = np.linspace(min(tmp.ConTemp),max(tmp.ConTemp),1000)
+                N_vec = np.ones(len(t_vec))
+                residual_smooth = resid(fit_Mod.params, t_vec, N_vec)
+                predictedVal = residual_smooth + N_vec
+                res = {'Modelplot':predictedVal, 'Temperature(K)':t_vec}
+                Resid = pd.DataFrame(res)
+                print(Resid)
+                stres = "../Results/" + Type + ".residuals.csv"
+                print(stres)
+                Resid.to_csv(stres)
             
             #adjust index
             j = i-1
@@ -168,7 +182,7 @@ def main(argv):
     """ Build Linear model and prints parameter estimates and AIC """
     fields = ['ID', 'ConTemp', 'OriginalTraitValue']
     #read in data
-    TempResp = pd.read_csv(argv[1], usecols = fields)
+    TempResp = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float})
 
     #drop Na values from OriginalTraitValue
     TempResp['ConTemp'] = 273.15+TempResp['ConTemp']
@@ -195,8 +209,9 @@ def main(argv):
         Results = pd.DataFrame(data = paras, columns=["a", "b", "c", "d", "RSq", "AIC"])
         Results.to_csv("../Results/Cubic.csv")
         print("You will find your results at ../Results/Cubic.csv")
-    print(paras)
-    
+    print(Results.head())
+    print("and so on...")
+
     return 0
 
 if __name__ == "__main__": 

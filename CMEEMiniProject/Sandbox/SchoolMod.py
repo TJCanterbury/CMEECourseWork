@@ -52,9 +52,13 @@ def Starting_vals_school(x):
     return params_school
 
 def main(argv):
-    TempResp = pd.read_csv(argv[1])
+    fields = ['ID', 'ConTemp', 'OriginalTraitValue']
+    #read in data
+    TempResp = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float})
+
     #convert to kelvin and remove negaitve trait values
     TempResp['ConTemp'] = 273.15+TempResp['ConTemp']
+
 
     Tmp = TempResp[TempResp['ID']==int(argv[2])]
     Tmp = Tmp.reset_index(drop=True)
@@ -72,9 +76,9 @@ def main(argv):
     p.plot(Tmp.ConTemp, result_school, 'b.', markersize = 15, label = 'schoolfield')
     #Get a smooth curve by plugging a time vector to the fitted logistic model
     t_vec = np.linspace(min(Tmp.ConTemp),max(Tmp.ConTemp),1000)
-    log_N_vec = np.ones(len(t_vec))
-    residual_smooth_school = residuals_school(fit_school.params, t_vec, log_N_vec)
-    p.plot(t_vec, residual_smooth_school + log_N_vec, 'blue', linestyle = '--', linewidth = 1)
+    N_vec = np.ones(len(t_vec))
+    residual_smooth_school = residuals_school(fit_school.params, t_vec, N_vec)
+    p.plot(t_vec, residual_smooth_school + N_vec, 'blue', linestyle = '--', linewidth = 1)
     p.plot(Tmp.ConTemp, Tmp.OriginalTraitValue)
     p.show()
 

@@ -1,16 +1,18 @@
 #!/bin/bash
 # Author: Tristan Canterbury tjc19@ic.ac.uk
-# Script: Temp.sh
-# Description: Model fitting Temp data
+# Script: DotheTHing.sh
+# Description: Model fitting temperature performance curve data
 # Arguments: 
-# Date: Oct 2020
+# Date: Nov 2020
 
-python3 Modelit.py '../Data/ThermRespData.csv' 'Line'
-python3 Modelit.py '../Data/ThermRespData.csv' 'Quadratic'
-python3 Modelit.py '../Data/ThermRespData.csv' 'Cubic'
-python3 Modelit.py '../Data/ThermRespData.csv' 'Briere'
-python3 Modelit.py '../Data/ThermRespData.csv' 'Schoolfield'
+rm ../Results/res.csv
+python3 plot1.py '../Data/ThermRespData.csv' 256 'Plot'
+echo "'Schoolfield', 'Briere', 'Cubic', 'Quadratic', 'Line'" >> ../Results/res.csv
+
+python3 plot1.py '../Data/ThermRespData.csv' 256 'Stats'
+
 
 Rscript Seethething.R
+rm Rplots.pdf
 
 bash CompileLaTeX.sh Temp.tex 
