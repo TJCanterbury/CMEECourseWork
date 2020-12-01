@@ -2,17 +2,17 @@
 # Author: Tristan Canterbury tjc19@ic.ac.uk
 # Script: DotheTHing.sh
 # Description: Model fitting temperature performance curve data
-# Arguments: 
+# Arguments: None
 # Date: Nov 2020
 
-rm ../Results/res.csv
-python3 plot1.py '../Data/ThermRespData.csv' 256 'Plot'
-echo "'Schoolfield', 'Briere', 'Cubic', 'Quadratic', 'Line'" >> ../Results/res.csv
+#Figure 1, ID 257
+python3 -W ignore Models.py '../Data/ThermRespData.csv' 257 'Plot'
 
-python3 plot1.py '../Data/ThermRespData.csv' 256 'Stats'
+#AIC Data
+python3 -W ignore Models.py '../Data/ThermRespData.csv' 903 'Stats'
 
-
+#Figure 2
 Rscript Seethething.R
-rm Rplots.pdf
 
+#Report
 bash CompileLaTeX.sh Temp.tex 

@@ -20,7 +20,7 @@ from csv import writer
 k = 8.617e-5
 
 ## functions ##
-# Linear models
+# Models
 def residuals_cube(params, t, data):
     """Calculate cubic growth and subtract data"""
     
@@ -55,7 +55,7 @@ def residuals_lin(params, t, data):
     return model - data     #Return residuals
 
 def Define_Parameters(labels, values):
-    #Create object for storing parameters
+    """Function for simplifying process of defining parameters"""
     par_linear = Parameters()
 
     for i in range(len(labels)):
@@ -68,7 +68,7 @@ def residuals_Briere(params, t, data):
     '''Fit a Breire model and subtract data'''
     #Get an ordered dictionary of parameter values
     v = params.valuesdict()
-    #Logistic model
+
     model = v['B'] * t * (t - v['t0']) * ((v['tm'] - t) ** (0.5))
     #Return residuals
     return model - data
@@ -78,7 +78,7 @@ def residuals_school(params, t, data):
     '''Fit a Breire model and subtract data'''
     #Get an ordered dictionary of parameter values
     v = params.valuesdict()
-    #Logistic model
+
     model = (v['B0'] * np.exp((-v['E']/k) * ((1/t) - (1/283.15))) ) / (1 + np.exp((v['El']/k) * ((1/v['Tl']) - (1/t))) + np.exp((v['Eh']/k) * ((1/v['Th']) - (1/t))))
     #Return residuals
     return model - data
@@ -86,32 +86,46 @@ def residuals_school(params, t, data):
 
 def Starting_vals_school(x):
     """ Find starting values for Schoolfield model parameters """
-    m = (x.OriginalTraitValue[1] - x.OriginalTraitValue[0])/(x.ConTemp[1] - x.ConTemp[0])
-    c = x.OriginalTraitValue[0]- (abs(m) * x.ConTemp[0])
-    B0 = abs(m)*283.15 + c
+    if min(x.ConTemp)>284:
+        if (x.ConTemp[1] - x.ConTemp[0]) > 0 :
+            m = (x.OriginalTraitValue[1] - x.OriginalTraitValue[0])/(x.ConTemp[1] - x.ConTemp[0])
+        if (x.ConTemp[2] - x.ConTemp[0]) > 0 :
+            m = (x.OriginalTraitValue[2] - x.OriginalTraitValue[0])/(x.ConTemp[2] - x.ConTemp[0])
+        c = x.OriginalTraitValue[0]- (abs(m) * x.ConTemp[0])
+        B0 = abs(m)*283.15 + c
+    if min(x.ConTemp)<=284:
+        B0 = np.mean(x.OriginalTraitValue[x.ConTemp == min(x.ConTemp, key=lambda z:abs(z - 283.15))])
+    if B0 < 0 :
+        B0 = 1
+    Eee = np.log(B0) - x.OriginalTraitValue[2]/(1/((x.ConTemp[2])*k) - 1/283.15)
+
     mAx = max(x.OriginalTraitValue)
-    Opt = float(x.ConTemp[x.OriginalTraitValue == mAx])
+    Opt = np.mean(x.ConTemp[x.OriginalTraitValue == mAx])
     y = x[x.ConTemp >= Opt]
     w = x[x.ConTemp <= Opt]
-    Tl = int(w.ConTemp[w.OriginalTraitValue == min(w.OriginalTraitValue, key=lambda z:abs(z - mAx/2))])
-    Th = int(y.ConTemp[y.OriginalTraitValue == min(y.OriginalTraitValue, key=lambda z:abs(z - mAx/2))])
+    Tl = np.mean(w.ConTemp[w.OriginalTraitValue == min(w.OriginalTraitValue, key=lambda z:abs(z - mAx/2))])
+    Th = np.mean(y.ConTemp[y.OriginalTraitValue == min(y.OriginalTraitValue, key=lambda z:abs(z - mAx/2))])
     
     params_school = Parameters()
-    params_school.add('B0', value = B0, max = 10000000, min = -10000000)
-    params_school.add('El', value = 1, max = 10000000, min = -10000000)
-    params_school.add('Eh', value = 1, max = 10000000, min = -10000000)
-    params_school.add('Tl', value = Tl, max = 10000000, min = -10000000)
-    params_school.add('Th', value = Th, max = 10000000, min = -10000000)
-    params_school.add('E', value = 1, max = 10000000, min = -10000000)
+    params_school.add('B0', value = B0)
+    params_school.add('El', value = Eee)
+    params_school.add('Eh', value = Eee)
+    params_school.add('Tl', value = Tl)
+    params_school.add('Th', value = Th)
+    params_school.add('E', value = Eee)
     return params_school
 
 def starting_vals_Briere(x):
     """ find startting vaslues for Briere parameters """
     params = Parameters()
-    params.add('B', value = 1)
-    params.add('t0', value = min(x.ConTemp))
-    params.add('tm', value = max(x.ConTemp))
+    params.add('B', value = 1, min = 0)
+    params.add('t0', value = min(x.ConTemp), min = 0)
+    params.add('tm', value = max(x.ConTemp), min = 0)
     return params
+
+def SampleParams(P, size):
+    """ takes given parameters and creates a uniform distribution around them and samples 10(?) possible sets of those parameters """
+    ethtr
 
 # Model builder
 def Lin_Mod(Data, ID, plot):
@@ -128,17 +142,15 @@ def Lin_Mod(Data, ID, plot):
 
     tmp['ConTemp'] = 273.15+tmp['ConTemp']
 
-    #tmp['OriginalTraitValue'] = np.log(tmp['OriginalTraitValue'])
-
     if plot == 'Plot':
-        p.plot(tmp.ConTemp, tmp.OriginalTraitValue, 'bo')
+        p.plot(tmp.ConTemp, tmp.OriginalTraitValue, 'b+')
+    #if len(tmp) < 6 :
+    #    return(Scores)
 
     for i in Type :
         if i == 'Schoolfield':
             colour = Colour[1]
             resid = residuals_school
-            if len(tmp) < 6 :
-                break
             params = Starting_vals_school(tmp)
             j = 0
         
@@ -169,7 +181,7 @@ def Lin_Mod(Data, ID, plot):
         tmp = tmp.reset_index(drop=True)
         
         #create minimzer object
-        minner = Minimizer(resid, params, fcn_args=(tmp.ConTemp, tmp.OriginalTraitValue))
+        minner = Minimizer(resid, params, fcn_args=(tmp.ConTemp, tmp.OriginalTraitValue), nan_policy='propagate')
                     
         #Perform the minimization
         fit_Mod = minner.minimize(method = 'leastsq')
@@ -183,39 +195,37 @@ def Lin_Mod(Data, ID, plot):
             predictedVal = residual_smooth + N_vec
             p.plot(t_vec, predictedVal, colour, linestyle = '--', linewidth = 1)
     if plot == 'Plot':  
+        
+        p.legend(fontsize = 10, labels = ['Data', 'Briere', 'Schoolfield', 'Line', 'Quadratic', 'Cubic'])
+        p.xlabel('Temperature (K)', fontsize = 10)
+        p.ylabel('Original Trait Valaue', fontsize = 10)
+        p.ticklabel_format(style='scientific', scilimits=[0,3])
         p.savefig('../Results/plot110.pdf')
         p.close()
     return(Scores)
 
-def append_list_as_row(file_name, list_of_elem):
-    # Open file in append mode
-    with open(file_name, 'a+', newline='') as write_obj:
-        # Create a writer object from csv module
-        csv_writer = writer(write_obj)
-        # Add contents of list as last row in the csv file
-        csv_writer.writerow(list_of_elem)
-
 def main(argv):
     """ Build Linear model and prints parameter estimates and AIC """
     fields = ['ID', 'ConTemp', 'OriginalTraitValue']
+    Num = int(argv[2])
     #read in data
     TempResp = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float}) 
     if argv[3] == 'Plot':
-        Lin_Mod(TempResp, int(argv[2]), argv[3])
+        Lin_Mod(TempResp, Num, argv[3])
     if argv[3] == 'Stats':
-        paras = np.zeros((906, 5))
-        for i in range(1, 906):
+        paras = np.zeros((Num-1, 5))
+        for i in range(1, Num):
             # For each ID attempt to fit every model, if this fails move on to next ID
             try:
                 paras[i-1,:] = Lin_Mod(TempResp, i, argv[3])
-
+                Paras = pd.DataFrame(paras, columns = ['Briere', 'Schoolfield', 'Line', 'Quadratic', 'Cubic'])
+                
                 print("ID: ", i, " AIC scores ", paras[i-1,:], end="\r")
             except:
                 pass
-        append_list_as_row("../Results/res.csv", paras)
+        Paras.to_csv('../Results/res.csv')
         print('\n')
         
-
 if __name__ == "__main__": 
     """Makes sure the "main" function is called from command line"""  
     status = main(sys.argv)

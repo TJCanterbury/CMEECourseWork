@@ -85,7 +85,7 @@ def residuals_school(params, t, data):
 
 def Starting_vals_school(x):
     """ Find starting values for Schoolfield model parameters """
-    m = (x.OriginalTraitValue[1] - x.OriginalTraitValue[0])/(x.ConTemp[1] - x.ConTemp[0])
+    m = (x.OriginalTraitValue[3] - x.OriginalTraitValue[0])/(x.ConTemp[3] - x.ConTemp[0])
     c = x.OriginalTraitValue[0]- (abs(m) * x.ConTemp[0])
     B0 = abs(m)*283.15 + c
     mAx = max(x.OriginalTraitValue)
