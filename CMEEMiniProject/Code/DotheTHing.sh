@@ -6,10 +6,10 @@
 # Date: Nov 2020
 
 #Figure 1, ID 257
-python3 -W ignore Models.py '../Data/ThermRespData.csv' 257 'Plot'
+python3 -W ignore npMod.py '../Data/ThermRespData.csv' 257 'Plot'
 
 #AIC Data
-python3 -W ignore Models.py '../Data/ThermRespData.csv' 903 'Stats'
+python3 -W ignore npMod.py '../Data/ThermRespData.csv' 903 'Stats'
 
 #Figure 2
 Rscript Seethething.R
