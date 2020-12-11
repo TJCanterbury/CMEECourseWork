@@ -80,7 +80,6 @@ def Starting_vals_school(x, Ran = False):
 	if Tl <=0 or Th <= 0 or Eee == 0 :
 		Ran = True
 	
-	
 	if Ran:
 		#Randomify:
 		B0 = np.random.uniform(0, 20, size = 1)
@@ -143,9 +142,10 @@ def Lin_Mod(Data, ID, plot):
 	tmp = Data[Data[:,0]==ID]
 	# array for AIC scores
 	Scores = np.zeros(6)
+	escaping = np.zeros(6)
 	if len(tmp) < 6 :
 		print('ID: ', ID, ' sample size is: ', len(tmp), ' so skipped')
-		return(Scores)
+		return escaping
 	
 	#Shift data up
 	shifty = 0
@@ -176,7 +176,7 @@ def Lin_Mod(Data, ID, plot):
 			p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
 			if p_value > alpha:
 				print("ID ", ID, " Not significant")
-				return Scores
+				return escaping
 			Scores[j] = best_mod.aic
 
 		if i == 'Schoolfield':
@@ -210,6 +210,13 @@ def Lin_Mod(Data, ID, plot):
 				except:
 					pass
 			
+			F = variance(best_mod.residual)/variance(tmp[:,2])
+			alpha = 0.05
+			p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
+			if p_value > alpha:
+				print("ID ", ID, " Not significant")
+				return escaping
+			
 		if i == 'Briere':
 			colour = Colour[1]
 			resid = residuals_Briere
@@ -240,7 +247,13 @@ def Lin_Mod(Data, ID, plot):
 						Scores[j] = fit_Mod.aic
 				except:
 					pass
-			
+			F = variance(best_mod.residual)/variance(tmp[:,2])
+			alpha = 0.05
+			p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
+			if p_value > alpha:
+				print("ID ", ID, " Not significant")
+				return escaping
+
 		if plot == 'Plot':        # Plot this model type
 			print(i)
 			print(report_fit(best_mod))
@@ -250,7 +263,10 @@ def Lin_Mod(Data, ID, plot):
 			residual_smooth = resid(best_mod.params, t_vec, N_vec)
 			predictedVal = residual_smooth + N_vec
 			p.plot(t_vec, (predictedVal - shifty), colour, linestyle = '--', linewidth = 1)
-	
+	MiNScore = min(Scores[1:4])
+	Scores[1] = np.exp((MiNScore-Scores[1])/2)
+	Scores[2] = np.exp((MiNScore-Scores[2])/2)
+	Scores[3] = np.exp((MiNScore-Scores[3])/2)
 	Scores[0] = ID
 	Scores[4] = maxT - minT
 	Scores[5] = (maxT - minT)/len(tmp)
@@ -269,14 +285,16 @@ def Lin_Mod(Data, ID, plot):
 def main(argv):
 	""" Build Linear model and prints parameter estimates and AIC """
 	#prep
-	fields = ['ID', 'ConTemp', 'OriginalTraitValue']
+	fields = ['ID', 'ConTemp', 'OriginalTraitValue', 'ConTempMethod']
 	Num = int(argv[2])
 	
 	#read in data
-	TempResp = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float}) 
-	TempResp = np.array(TempResp)
+	TempRespd = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float, 'ConTempMethod': str}) 
 	
+	TempResp = TempRespd.drop(columns=['ConTempMethod'])
+	TempResp = np.array(TempResp, dtype = float)
 	TempResp[:,[1, 2]] = TempResp[:,[2, 1]]
+
 	# Option Plot: Best fit for ID given by argv[2]
 	if argv[3] == 'Plot':
 		Lin_Mod(TempResp, Num, argv[3])
@@ -285,17 +303,21 @@ def main(argv):
 	if argv[3] == 'Stats':
 		paras = np.zeros((Num-1, 6))
 		print('Schoolfield', 'Briere', 'Quadratic', end = '\n')
-		
+		Habitats = []
 		for i in range(1, Num):
 			# For each ID attempt to fit every model, if this fails move on to next ID
 			try:
-				
+				tmp = TempRespd.ConTempMethod[TempRespd.ID == i]
+				Habitats.append(np.unique(tmp)[0])
 				paras[i-1,:] = Lin_Mod(TempResp, i, argv[3])
-				print('ID: ', i, ' ', 'Schoolfield AIC: ', paras[i-1,1], 'Briere AIC: ', paras[i-1,2], 'Quadratic AIC: ', paras[i-1,3], end="\n")
-				print('Unfiltered running mean: ', np.mean(paras[:,1]), np.mean(paras[:,2]), np.mean(paras[:,3]))
+				if max(paras[i-1, 1:4]) == 1:
+					print('ID: ', i, ' ', Habitats[i-1], ' ', 'Schoolfield AIC: ', paras[i-1,1], 'Briere AIC: ', paras[i-1,2], 'Quadratic AIC: ', paras[i-1,3], end="\n")
+
 			except:
 				pass
 		Paras = pd.DataFrame(paras, columns = ['ID', 'Schoolfield', 'Briere', 'Quadratic', 'Range', 'Density'])
+		ConTempMethod = pd.Series(Habitats)
+		Paras['ConTempMethod'] = ConTempMethod.values
 		Paras.to_csv('../Results/res.csv')
 		print('\n')
 

@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
+\usepackage{amsmath}
 \title{Effect of Temperature Range on Model Performance}
 \author{Tristan J Canterbury}
 \date{30/11/2020}
@@ -13,18 +14,18 @@
   \end{abstract}
 
   \section{An Introduction}
-  The niche space of any species is sure to be multidimensional, meaning there are many ways for an organism to die. Temperature is one of these dimensions and it cannot be relied upon to remain constant, particularly for terrestrial species. Organisms need to have plastic responses to temperature changes to survive whilst still optimising for their typical environmental temperatures but when we look at temperature performance curves we see a slightly more complex picture. We do not simply see a normal distribution about an optimal temperature for biological traits but a complex asymmetrical curve. It is believed that these temperature response curves reflect the direct effects of temperature on the biochemical reactions relevant to the trait, and so various mechanistic models have been built to reflect our understanding of the chemistry of life.
-  \\The Sharpe-Schoolfield model is one such model that and it describes temperature response curves in the following way. Chemical reactions have an activation energy, the threshold energy requirement for a collision between reactants to result in a reaction. This threshold can be lowered through catalytic enzymes which are reusable and so should reduce the cost on the organism to release this energy from other sources. However, the shapes of enzymes are not rigid and so at higher temperatures they can denature to the point of inactivation. We see a more gentle decrease in performance at lower temperatures as the probability of a high energy collision between reactants and enzymes decreases.
-  \\In the metabolic theory of ecology it is believed that by mapping the relationship between temperature and performance of different metabolic traits we can better understand the effects of the weather and climate on the ecology of species because metabolic performance should have an effect on fitness and survival. 
-  Here I investigate the performance of different models in predicting performance of biological traits at different temperatures. I ask whether any of these models are good enough tools for understanding thermal response curves, particularly when data is limited in size and range, and whether a mechanistic model grounded in metabolic theory, the Sharpe-Schoolfield model, will fair better than phenomenological ones, a quadratic and a Briere model.
+  The niche space of any species is sure to be multidimensional, meaning there are many ways for an organism to die. Temperature is one of these dimensions and it cannot be relied upon to remain constant, particularly for terrestrial species. Organisms need to have plastic responses to temperature changes to survive whilst still optimising for their typical environmental temperatures but when we look at temperature performance curves we see a slightly more complex picture. We do not simply see a normal distribution about an optimal temperature for biological traits but a complex asymmetrical curve. It is believed that these temperature response curves reflect the direct effects of temperature on the biochemical reactions relevant to the trait, and so various mechanistic models have been built to reflect our understanding of the chemistry of life.\\
+  The Sharpe-Schoolfield model is one such model that and it describes temperature response curves in the following way. Chemical reactions have an activation energy, the threshold energy requirement for a collision between reactants to result in a reaction. This threshold can be lowered through catalytic enzymes which are reusable and so should reduce the cost on the organism to release this energy from other sources. However, the shapes of enzymes are not rigid and so at higher temperatures they can denature to the point of inactivation. We see a more gentle decrease in performance at lower temperatures as the probability of a high energy collision between reactants and enzymes decreases.\\
+  In the metabolic theory of ecology it is believed that by mapping the relationship between temperature and performance of different metabolic traits we can better understand the effects of the weather and climate on the ecology of species because metabolic performance should have an effect on fitness and survival. 
+  Here I investigate the performance of different models in predicting performance of biological traits at different temperatures. I ask whether any of these models are good enough tools for understanding thermal response curves, particularly when data is limited in size and range, and whether a mechanistic model grounded in metabolic theory, the Sharpe-Schoolfield model, will fair better than phenomenological ones, a quadratic and a Briere model.\\
 
   \section{The Data}
-  The dataset I use broadly holds performance data for photosynthesis and respiration at different temperatures. Photosynthesis and respiration are well understood, vital life processes and both have some of their reactants and products in the air making them relatively easy targets for study and modelling. There is considerable variance in sample size and temperature range between IDs in the Dataset and so these will have to be controlled for through mixed linear models when analysing the goodness of fit results. A large amount of IDs also have sample sizes below 6 and so these are excluded from the analysis as the larger sample sizes are required to fit a Sharpe-Schoolfield model. The data also comes from different species and so this may be controlled for too.
+  The dataset I use broadly holds performance data for photosynthesis and respiration at different temperatures. Photosynthesis and respiration are well understood, vital life processes and both have some of their reactants and products in the air making them relatively easy targets for study and modelling. There is considerable variance in sample size and temperature range between IDs in the Dataset and so these will have to be controlled for through mixed linear models when analysing the goodness of fit results. A large amount of IDs also have sample sizes below 6 and so these are excluded from the analysis as the larger sample sizes are required to fit a Sharpe-Schoolfield model. The data also comes from different species and so this may be controlled for too.\\
  
   \section{The Models}
-  I built 3 models for comparison, one being a simple linear quadratic model, one being a Briere model and one being a Sharpe-Schoolfield model . 
-  \\Linear models are generally the easiest models to generate because there is only one optimal set of coefficients that will model the data. Where we save in computational time and human effort we lose biological meaning (and delayed gratification?). The coefficients we generate do not have any biological meaning other than that they describe the shape of the data. However we can still use this to find the optimum temperature for the performance of a trait and gain a better understanding for the shape of the performance curves which for many ecological applications is probably enough. If the fit is terrible not so much and its ability to describe the data regardless of fit is also fundamentally limited because it cannot show any changes in rates of rates of change and so, for instance, plateaus towards either end of a curve and skewness will be hidden by this model.
-  \\Briere Model \cite{Brierea} is a phenomological, non linear model that was designed to take the shape of a temperature response curve, specifically that of temperature dependent development rates of arthropods. It takes 4 parameters, the minimum (T0) and maximum (Tm) feasible temperatures of the trait and B0 as a normalisation constant and m for generalising the shape for other sorts of temperature curve. With 2 of the parameters in this model being more biologically meaning and the shape of the curve being more custom for temperature performance curves you would expect this to perform better than a quadratic model.
+  I built 3 models for comparison, one being a simple linear quadratic model, one being a Briere model and one being a Sharpe-Schoolfield model.\\
+  Linear models are generally the easiest models to generate because there is only one optimal set of coefficients that will model the data. Where we save in computational time and human effort we lose biological meaning (and delayed gratification?). The coefficients we generate do not have any biological meaning other than that they describe the shape of the data. However we can still use this to find the optimum temperature for the performance of a trait and gain a better understanding for the shape of the performance curves which for many ecological applications is probably enough. If the fit is terrible not so much and its ability to describe the data regardless of fit is also fundamentally limited because it cannot show any changes in rates of rates of change and so, for instance, plateaus towards either end of a curve and skewness will be hidden by this model.\\
+  Briere Model \cite{Brierea} is a phenomological, non linear model that was designed to take the shape of a temperature response curve, specifically that of temperature dependent development rates of arthropods. It takes 4 parameters, the minimum (T0) and maximum (Tm) feasible temperatures of the trait and B0 as a normalisation constant and m for generalising the shape for other sorts of temperature curve. With 2 of the parameters in this model being more biologically meaning and the shape of the curve being more custom for temperature performance curves you would expect this to perform better than a quadratic model.\\
 
   \begin{equation}
     \begin{split}
@@ -38,8 +39,7 @@
         \end{split}
   \end{equation}
 
-  
-  \\Sharpe-Schoolfield model \cite{Schoolfield1981} is one such mechanistic model grounded in biochemistry and it describes temperature response curves in the following way. Metabolic reactions have an activation energy (defined as E in the model), the threshold energy requirement for a collision between reactants to result in a reaction. This threshold is lowered through catalytic enzymes which are reusable and so should reduce the cost on the organism to release this energy from other sources, The activation . However, the shapes of enzymes are not rigid and so at higher temperatures they can denature to the point of inactivation, this temperature is defined as Th and the energy is defined as Eh which are the Temperature and energy at which 50% of enzyme units are inactive on the hotter side of the curve. We see a more gentle decrease in performance at lower temperatures as the probability of a high energy collision between reactants and enzymes decreases, the model represents this with Tl and El, which are the energy and temperature when the performance is at half on the cooler side of the curve. B0 is then the real rate performance of the trait at a reference temperature of 283.15 kelvin. 
+  Sharpe-Schoolfield model \cite{Schoolfield1981} is one such mechanistic model grounded in biochemistry and it describes temperature response curves in the following way. Metabolic reactions have an activation energy (defined as E in the model), the threshold energy requirement for a collision between reactants to result in a reaction. This threshold is lowered through catalytic enzymes which are reusable and so should reduce the cost on the organism to release this energy from other sources, The activation . However, the shapes of enzymes are not rigid and so at higher temperatures they can denature to the point of inactivation, this temperature is defined as Th and the energy is defined as Eh which are the Temperature and energy at which 50\% of enzyme units are inactive on the hotter side of the curve. We see a more gentle decrease in performance at lower temperatures as the probability of a high energy collision between reactants and enzymes decreases, the model represents this with Tl and El, which are the energy and temperature when the performance is at half on the cooler side of the curve. B0 is then the real rate performance of the trait at a reference temperature of 283.15 kelvin. \\
   
   \begin{equation}
     B = \frac{B_0 e^{\frac{-E}{k} (\frac{1}{T} - \frac{1}{283.15})}}
@@ -51,19 +51,15 @@
   \cite{DeLong2017b}
 
   \section{The Analysis}
-  After fitting each model to each ID of the data set I found the AIC of the fit. I then did T-tests to determine whether overall any of the models came out on top in terms of AIC. Next I looked to see whether there were correlations between the AICs of the different models to determine whether one performed better for certain data. I then grouped the IDs into what they were measuring and compared model performance for each of those. I then did a cor test between AIC and the range of temperatures the data includes and this divided by the number of data points to determine whether the completeness of the data effected the performance of the different models in comparison to one another.
+  After fitting each model to each ID of the data set I found the AIC of the fit. I then did T-tests to determine whether overall any of the models came out on top in terms of AIC. Next I looked to see whether there were correlations between the AICs of the different models to determine whether one performed better for certain data. I then grouped the IDs into what they were measuring and compared model performance for each of those. I then did a cor test between AIC and the range of temperatures the data includes and this divided by the number of data points to determine whether the completeness of the data effected the performance of the different models in comparison to one another.\\
 
   \section{The Results}
-  \\I found that Schoolfield comes out on top in mean AIC but the overlap between the performance of the models is considerable. Here in this example fit of ID 257 you can see why Schoolfield might be outperforming the other 2 models. It has a greater flexibility in shape due to the additional parameters and in particular it can do much sharper turns at the inflection point allowing it to reach the peak performance points for teh different traits. It only as this advantage however when the data has a complete curve and so I decided to investigate the effects of temperature range on the performance of these models.
+  I found that Schoolfield comes out on top in mean AIC but the overlap between the performance of the models is considerable. Here in this example fit of ID 257 you can see why Schoolfield might be outperforming the other 2 models. It has a greater flexibility in shape due to the additional parameters and in particular it can do much sharper turns at the inflection point allowing it to reach the peak performance points for teh different traits. It only as this advantage however when the data has a complete curve and so I decided to investigate the effects of temperature range on the performance of these models.\\
   \begin{figure}[h]
     \includegraphics[width=\textwidth]{../Results/plot110.pdf}
   \end{figure}
 
-  \begin{figure}[]
-    \includegraphics[width=\textwidth]{../Results/Kiteplot.pdf}
-  \end{figure}
-
-  \\Here you can see that the overlaps in performance are widespread across temperature ranges but hopefully you will also see that for temperature ranges over 30 Kelvin we see that Schoolfield performs better and increasingly the performance of the otehr 2 models drops.
+  Here you can see that the overlaps in performance are widespread across temperature ranges but hopefully you will also see that for temperature ranges over 30 Kelvin we see that Schoolfield performs better and increasingly the performance of the otehr 2 models drops.\\
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Rangeplot.pdf}
@@ -73,25 +69,14 @@
     \includegraphics[width=\textwidth]{../Results/Samplesplot.pdf}
   \end{figure}
 
-  \\We can see the effect even clearer when we compare AICs between grouped ranges\:
+  We can see the effect even clearer when we compare AICs between grouped ranges\: \\
 
   \begin{figure}[]
-    \includegraphics[width=\textwidth]{../Results/RangesHnL.pdf}
+    \includegraphics[width=\textwidth]{../Results/AICs.pdf}
   \end{figure}
-  
-  \\This effect of Range is sure to be effected by sample size however and it is reasonable to assume that sample size and temperature range may be correlated in the data. To control for this I have used a mixed linear model to take account of this effect. This continued to show promising results with a high repeatability of over 80\%. The results here show that the Sharpe-Schoolfield model continues to outperform the other 3 particularly at high temperature ranges. 
-
-  \begin{figure}[]
-    \includegraphics[width=\textwidth]{../Results/LargeSample.pdf}
-  \end{figure}
-
-  \begin{figure}[]
-    \includegraphics[width=\textwidth]{../Results/Rangesby10.pdf}
-  \end{figure}
-
 
   \section{Discussion}
-  beep boop Discuss
+  beep boop Discuss\\
 
   \bibliographystyle{plain}
   \bibliography{CMEE}
