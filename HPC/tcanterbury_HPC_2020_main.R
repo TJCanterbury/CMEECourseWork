@@ -390,8 +390,41 @@ plot_cluster_results <- function() {
 }
 
 #ChallengeC
-Challenge_C <- function() {
-
+Challenge_C <- function(num=100) {
+    Rich_500 <- rep(0, 10)
+    Rich_1000 <- rep(0, 10)
+    Rich_2500 <- rep(0, 10)
+    Rich_5000 <- rep(0, 10)
+    n500 <- 0
+    n1000 <- 0
+    n2500 <- 0
+    n5000 <- 0
+    for (i in 1:num){
+        load(paste("Result_file_", i, ".rda", sep = ""))
+        if ((i - 1) %% 4 == 0) {
+            n500 <- n500 + 1
+            Rich_500 <- sum_vect(Rich_500, results[[1]][2])
+        }
+        if ((i - 2) %% 4 == 0) {
+            n1000 <- n1000 + 1
+            Rich_1000 <- sum_vect(Rich_1000, results[[1]][2])
+        }
+        if ((i - 3) %% 4 == 0) {
+            n2500 <- n2500 + 1
+            Rich_2500 <- sum_vect(Rich_2500, results[[1]][2])
+        }
+        if ((i - 4) %% 4 == 0) {
+            n5000 <- n5000 + 1
+            Rich_5000 <- sum_vect(Rich_5000, results[[1]][2])
+        }
+    }
+    #results
+    Rich_500  <- Rich_500 / n500
+    Rich_1000<- Rich_1000 / n1000
+    Rich_2500 <- Rich_2500 / n2500
+    Rich_5000 <- Rich_5000 / n5000
+    results <- list(Octaves_500, Octaves_1000, Octaves_2500, Octaves_5000)
+    save(results, file = 'Richness_results.rda')
 }
 
 #ChallengeD
@@ -470,10 +503,10 @@ Challenge_E <- function(X = c(0, 0), time=29.9) {
 }
 
 #Question24
-turtle <- function(start_position, direction, length) {
+turtle <- function(start_position, direction, length, col = "black") {
     vector <- c(length * cos(direction), length * sin(direction))
     end_position <- start_position + vector
-    segments(x0 = start_position[1], y0 = start_position[2], x1 = end_position[1], y1 = end_position[2])
+    segments(x0 = start_position[1], y0 = start_position[2], x1 = end_position[1], y1 = end_position[2], col = col)
     return(end_position)
 }
 
@@ -484,44 +517,92 @@ elbow <- function(start_position, direction, length) {
 
 #Question26
 spiral <- function(start_position, direction, length) {
-    start_position <- spiral(turtle(start_position, direction, length), direction - pi / 4, length * 0.95)
-    return("With each iteration the spiral curls in on itself because the distance shortens, preventing overlap, and the change in direction is always the same.")
+    start_position  <- turtle(start_position, direction, length)
+    if (length > 0.01) {
+        spiral(start_position, (direction - (pi / 4)), (length * 0.95))
+    }
+    else {
+        return("With each iteration the spiral curls in on itself because the distance shortens, preventing overlap, and the change in direction is always the same.")
+    }
 }
 
 #Question27
-draw_spiral <- function(start_position = c(2,10), direction = 0, length = 1) {
-    if (length > 0){
-        plot(1, type="n", xlab="", ylab="", xlim=c(0, max(start_position)), ylim=c(0, max(start_position)))
-        pr <- spiral(start_position, direction, length)
-        return(pr)
-    }
-    else {
-        return("No good, I demand a positive number for length argument")
-    }
+draw_spiral <- function(start_position = c(2,10), direction = 0, length = 4) {
+    plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes = F)
+    return(spiral(start_position, direction, length))
 }
 
 #Question28
-tree <- function(start_position, direction, length, duration = 1) {
-    t0 <- proc.time()
-    repeat {
-        start_position  <- turtle(start_position, direction, length)
-        direction <- direction + pi / 4
-        length <- length * 0.65
-        start_position  <- turtle(start_position, direction, length)
-        direction <- direction - pi / 4
-        length <- length * 0.65
-        if ((proc.time()[3] - t0[3]) >= duration){break}
-    }
-}
+tree <- function(start_position, direction, length) {
+    start_position1  <- turtle(start_position, (direction + (pi / 4)), (length * 0.65))
+    start_position2  <- turtle(start_position, (direction - (pi / 4)), (length * 0.65))
 
-draw_tree <- function(start_position = c(2,10), direction, length) {
-    if (length > 0){
-        plot(1, type="n", xlab="", ylab="", xlim=c(0, max(start_position)*2), ylim=c(0, length*4))
-        pr <- tree(start_position, direction, length)
-        return(pr)
+    if (length < 0.02) {
+        return("The tree function applies a fork to the end of the starting position and repeats this for all successive starting positions")
     }
+
     else {
-        return("No good, I demand a positive number for length argument")
+        tree(start_position1, (direction + (pi / 4)), (length * 0.65))
+        tree(start_position2, (direction - (pi / 4)), (length * 0.65))
     }
 }
 
+draw_tree <- function(start_position = c(4.8,0), direction = (pi / 2), length = 3.4) {
+    op <- par(mar = rep(0, 4))
+    par(op)
+    plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes = F)
+    start_position <- turtle(start_position, direction, length)
+    return(tree(start_position, direction, length))
+
+}
+
+#Question29
+fern <- function(start_position, direction, length) {
+    start_position1  <- turtle(start_position, (direction + (pi / 4)), (length * 0.38))
+    start_position2  <- turtle(start_position, direction, (length * 0.87))
+    if (length < 0.02) {
+        return("The fern function applies a fork to the end of the starting position and repeats this for all successive starting positions")
+    }
+
+    else {
+        fern(start_position1, (direction + (pi / 4)), (length * 0.38))
+        fern(start_position2, direction, (length * 0.87))
+    }
+}
+
+draw_fern <- function(start_position = c(4.8,0), direction = (pi / 2), length = 1) {
+    op <- par(mar = rep(0, 4))
+    par(op)
+    plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes = F)
+    start_position <- turtle(start_position, direction, length)
+    return(fern(start_position, direction, length))
+
+}
+
+#Question30
+fern2 <- function(start_position, direc, len, dir = -1) {
+    dir <- dir * -1
+    start_position  <- turtle(start_position, direc, len)
+    if (len < 0.005) {
+        return("The fern function applies a fork to the end of the starting 
+        position and repeats this for all successive starting positions")
+    }
+
+    else {
+        fern2(start_position, (direc + (pi / 4)  * dir), (len * 0.38), -dir)
+        fern2(start_position, direc, (len * 0.87), dir)
+    }
+}
+
+draw_fern2 <- function(start_position = c(4.8,0), direction = (pi / 2), length = 1) {
+    par(mar = rep(0, 4))
+    plot(1, type="n", xlim=c(0, 10), ylim=c(0, 10), axes = F)
+    return(fern2(start_position, direction, length))
+
+}
+
+#ChallengeF
+Challenge_F <- function() {
+    return("With smaller values of line threshold (e) the code takes longer as it must continue to draw lines of this length, and as it is a fractal, the number of these lines will ", 
+    "scale by the dimensionality of the fractal. Plotting the change in speed of code against e and finding the gradient would be one method for measuring the dimensionality of this fern.")
+}
