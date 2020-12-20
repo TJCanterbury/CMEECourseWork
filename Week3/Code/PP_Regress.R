@@ -1,7 +1,9 @@
 ########## Load data and packages ##########
 MyDF <- read.csv("../Data/EcolArchives-E089-51-D1.csv")
 head(MyDF)
-library(ggplot2, tidyverse, broom)
+library(ggplot2
+library(tidyverse)
+library(broom)
 
 ########## Analysis ###########
 Pred <- MyDF %>%

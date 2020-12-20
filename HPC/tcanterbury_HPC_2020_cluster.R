@@ -18,7 +18,8 @@ if ((iter - 3) %% 4 == 0) {
 if ((iter - 4) %% 4 == 0) {
     size = 5000
 }
-
+interval_oct = size / 10
+burn_in_generations = 8 * size
 output_file_name <- paste("Result_file_", iter, ".rda", sep = "")
 cluster_run(speciation_rate = 0.003926, size = size, wall_time = wall_time, interval_rich = 1, 
-    interval_oct = size/10, burn_in_generations = 8*size, output_file_name = output_file_name)
+    interval_oct = interval_oct, burn_in_generations = burn_in_generations, output_file_name = output_file_name)

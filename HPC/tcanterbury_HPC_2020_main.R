@@ -56,25 +56,26 @@ neutral_time_series <- function(community, duration) {
 
 #Question8
 question_8 <- function() {
-    print("Each time an individual of the population is replaced there is a chance that that individual is the last of it's species",
+    print(paste("Each time an individual of the population is replaced there is a chance that that individual is the last of it's species",
     ", and so there is a chance of species richness (the lime line) going down. As there is no speciation, species richness can only",
     " stay the same or go down unitl inevitably the system converges on the absorbing state of 1 species, as indicated but the grey ",
-    "dashed line.")
+    "dashed line.",sep=""))
 
     Species_Richness <- neutral_time_series(community = init_community_max(100), duration = 200)
 
     plot(Species_Richness, xlab = "Generation", ylab = "Species Richness", type = "l", col = "#3d5d00")
+    text(x=100,y=5, labels="Aproaches a Species Richness of 1", cex=0.75)
     abline(h = 1, col = "#808080", lty = 2)
 }
 
 #Question9
 neutral_step_speciation <- function(community, speciation_rate) {
+    TheChosen <- choose_two(length(community))
     if (runif(1, 0, 1) <= speciation_rate) {
-        TheChosen <- choose_two(length(community))
         community[TheChosen[1]] <- max(community) + 1
     }
     else{
-        community <- neutral_step(community)
+        community[TheChosen[1]] <- community[TheChosen[2]]
     }
     return(community)
 }
@@ -105,9 +106,10 @@ neutral_time_series_speciation <- function(community, duration, speciation_rate)
 
 #Question12
 question_12 <- function(community=100, duration=200, speciation_rate=0.1) {
-    print("Despite having different initial conditions both communities converge on the same equilibrium species richness because they have the same speciation rate and community size.",
+    print(paste("Despite having different initial conditions both communities converge on the same equilibrium species richness because they have the same speciation rate and community size.",
     " At lower species richnesses the probability of a species going extinct decreases because there are more individuals per species.",
-    " When the proportion of individuals that are the only ones of their species (extinction rate) equals the speciation rate, species richness reaches equilibrium.")
+    " When the proportion of individuals that are the only ones of their species (extinction rate) equals the speciation rate, species richness reaches equilibrium.",
+    sep=""))
 
     MaxR <- neutral_time_series_speciation(init_community_max(community), duration, speciation_rate)
     MinR <- neutral_time_series_speciation(init_community_min(community), duration, speciation_rate)
@@ -115,7 +117,7 @@ question_12 <- function(community=100, duration=200, speciation_rate=0.1) {
     plot(MaxR, xlab = "Generation", ylab = "Species Richness", type = "l", col = "#426600", ylim = c(1, 100))
     lines(MinR, col = "#a332ff")
     legend(10, 95, legend = c("Maximum Starting Species Richness", "Minimum Starting Species Richness"),
-       col = c("#426600", "#a332ff"), lty = 1, cex = 0.8)
+       col = c("#426600", "#a332ff"), lty = 1, cex = 0.8, bty = "n")
 }
 
 #Question13
@@ -179,9 +181,9 @@ question_16 <- function() {
         meanoctin <- c(meanoctin, rep(0, abs(dif)))
     }
     sim16 <- data.frame(Max_Starting_R = meanoctax, Min_Starting_R = meanoctin, row.names = seq_len(length(meanoctax)))
-    color.names <- c("green", "purple")
+    color.names <- c("#a8ff37", "#b260ff")
     barplot(t(sim16), beside = TRUE, col = color.names, xlab = "Octaves", ylab = "Abundance", ylim = c(0, 12))
-    legend("top", rownames(t(sim16)), cex = 0.8, fill = color.names, title = "Simulation")
+    legend("top", rownames(t(sim16)), cex = 0.8, fill = color.names, title = "Simulation", bty = "n")
 
     print("The starting values do not matter in this simulation because each state is only informed by the previous one, with no memory of the starting state of the system. So after the 200 gen burn-in the 2 simulations are at roughly equal starting positions near equilibrium, having converged, and will continue to converge at this equilibrium. So we should not expect the results of these 2 simulations to be significantly different.")
 }
@@ -250,7 +252,7 @@ colours <- function(j, alpha = 0.5) {
     return(colour)
 }
 
-Challenge_B <- function(size = 100, duration = 200, repeats = 20, speciation_rate = 0.1, Number_of_Communities = 10) {
+Challenge_B <- function(size = 100, duration = 200, repeats = 10, speciation_rate = 0.1, Number_of_Communities = 10) {
     #starting parameters
     Richness_data <- matrix(data = NA, nrow = duration + 1, ncol = repeats)
     mean_results <- matrix(data = NA, nrow = duration + 1, ncol = Number_of_Communities)
@@ -288,7 +290,6 @@ Challenge_B <- function(size = 100, duration = 200, repeats = 20, speciation_rat
     abline(h = equilibrium, col = "grey", lty = 3, lwd = 2)
     text(x = 125, y = (as.integer(equilibrium) - 15), labels = paste("Dynamic equilibrium\n Species Richness = ", equilibrium, sep = ""), col = "#464646")
     legend("top", legend = Number_of_species, bty = "n", cex = 0.8, fill = legend_cols, title = "Starting Species Richness")
-
 }
 
 #Question17
@@ -298,17 +299,18 @@ cluster_run <- function(speciation_rate, size, wall_time, interval_rich, interva
 
     #Starting values and preallocations:
     community <- init_community_min(size)
-    time <- proc.time()[3] + (wall_time * 60)
+    end_time <- start_time[3] + (wall_time * 60)
     generation <- 0
     richness <- rep(0, burn_in_generations / interval_rich)
     burn_in_index <- 0
-    abundance_data <- c()
+    oct <- rep(0, nrow = 1, ncol = 5)
     n = 0
-    oct <- rep(0, 10)
 
     #Run simulation:
     repeat {
-        if (proc.time()[3] >= time) {break}
+        if (proc.time()[3] >= end_time) {
+            break
+        }
         community <- neutral_generation_speciation(community, speciation_rate)
         generation <- generation + 1
 
@@ -320,16 +322,16 @@ cluster_run <- function(speciation_rate, size, wall_time, interval_rich, interva
 
         #Record abundances of octaves
         if (generation %% interval_oct == 0) {
-            n <- n + 1
             oct <- sum_vect(oct, octaves(species_abundance(community)))
+            n = n + 1
         }
     }
-    abundance_data <- oct / n
+
     #Make results list:
     richness_data <- data.frame(Generation = seq.int(1, burn_in_generations, interval_rich), 'Species Richness' = richness)
     time_elapsed <- proc.time() - start_time
-    parameters <- c(speciation_rate, size, wall_time, interval_rich, interval_oct, burn_in_generations)
-    results <- list(richness_data, abundance_data, community, time_elapsed, parameters)
+    parameters <- c(speciation_rate, size, wall_time, interval_rich, interval_oct, burn_in_generations, generation, n)
+    results <- list(richness_data, oct, community, time_elapsed, parameters)
 
     #write results to file
     save(results, file = output_file_name)
@@ -337,10 +339,10 @@ cluster_run <- function(speciation_rate, size, wall_time, interval_rich, interva
 
 #Question20
 process_cluster_results <- function(num = 100) {
-    Octaves_500 <- rep(0, 10)
-    Octaves_1000 <- rep(0, 10)
-    Octaves_2500 <- rep(0, 10)
-    Octaves_5000 <- rep(0, 10)
+    Octaves_500 <- rep(0, 5)
+    Octaves_1000 <- rep(0, 5)
+    Octaves_2500 <- rep(0, 5)
+    Octaves_5000 <- rep(0, 5)
     n500 <- 0
     n1000 <- 0
     n2500 <- 0
@@ -349,19 +351,23 @@ process_cluster_results <- function(num = 100) {
         load(paste("Result_file_", i, ".rda", sep = ""))
         if ((i - 1) %% 4 == 0) {
             n500 <- n500 + 1
-            Octaves_500 <- sum_vect(Octaves_500, results[[2]])
+            data_i <- results[[2]] / results[[5]][8]
+            Octaves_500 <- sum_vect(Octaves_500, data_i[!is.na(data_i)])
         }
         if ((i - 2) %% 4 == 0) {
             n1000 <- n1000 + 1
-            Octaves_1000 <- sum_vect(Octaves_1000, results[[2]])
+            data_i <- results[[2]] / results[[5]][8]
+            Octaves_1000 <- sum_vect(Octaves_1000, data_i[!is.na(data_i)])
         }
         if ((i - 3) %% 4 == 0) {
             n2500 <- n2500 + 1
-            Octaves_2500 <- sum_vect(Octaves_2500, results[[2]])
+            data_i <- results[[2]] / results[[5]][8]
+            Octaves_2500 <- sum_vect(Octaves_2500, data_i[!is.na(data_i)])
         }
         if ((i - 4) %% 4 == 0) {
             n5000 <- n5000 + 1
-            Octaves_5000 <- sum_vect(Octaves_5000, results[[2]])
+            data_i <- results[[2]] / results[[5]][8]
+            Octaves_5000 <- sum_vect(Octaves_5000, data_i[!is.na(data_i)])
         }
     }
     #results
@@ -395,6 +401,8 @@ Challenge_C <- function(num=100) {
     Rich_1000 <- rep(0, 10)
     Rich_2500 <- rep(0, 10)
     Rich_5000 <- rep(0, 10)
+    alpha <- 1 / 4
+
     n500 <- 0
     n1000 <- 0
     n2500 <- 0
@@ -403,19 +411,23 @@ Challenge_C <- function(num=100) {
         load(paste("Result_file_", i, ".rda", sep = ""))
         if ((i - 1) %% 4 == 0) {
             n500 <- n500 + 1
-            Rich_500 <- sum_vect(Rich_500, results[[1]][2])
+            print(tail(results[[1]],1))
+            Rich_500 <- sum_vect(Rich_500, results[[1]][[2]])
         }
         if ((i - 2) %% 4 == 0) {
             n1000 <- n1000 + 1
-            Rich_1000 <- sum_vect(Rich_1000, results[[1]][2])
+            print(tail(results[[1]], 1))
+            Rich_1000 <- sum_vect(Rich_1000, results[[1]][[2]])
         }
         if ((i - 3) %% 4 == 0) {
             n2500 <- n2500 + 1
-            Rich_2500 <- sum_vect(Rich_2500, results[[1]][2])
+            print(tail(results[[1]],1))
+            Rich_2500 <- sum_vect(Rich_2500, results[[1]][[2]])
         }
         if ((i - 4) %% 4 == 0) {
             n5000 <- n5000 + 1
-            Rich_5000 <- sum_vect(Rich_5000, results[[1]][2])
+            print(tail(results[[1]],1))
+            Rich_5000 <- sum_vect(Rich_5000, results[[1]][[2]])
         }
     }
     #results
@@ -423,13 +435,98 @@ Challenge_C <- function(num=100) {
     Rich_1000<- Rich_1000 / n1000
     Rich_2500 <- Rich_2500 / n2500
     Rich_5000 <- Rich_5000 / n5000
-    results <- list(Octaves_500, Octaves_1000, Octaves_2500, Octaves_5000)
-    save(results, file = 'Richness_results.rda')
+    plot(1:length(Rich_5000), Rich_5000, col = colours(4, alpha), lwd = 2, type = "l", ylab = "Species Richness", xlab = "Generation")
+    lines(1:length(Rich_500), Rich_500, col = colours(1, alpha), lwd = 2)
+    lines(1:length(Rich_1000), Rich_1000, col = colours(2, alpha), lwd = 2)
+    lines(1:length(Rich_2500), Rich_2500, col = colours(3, alpha), lwd = 2)
+    legend_cols <- c(colours(1, alpha), colours(2, alpha), colours(3, alpha), colours(4, alpha))
+
+    #annotate
+    legend("right", legend = c("500", "1000", "2500","5000"), bty = "n", cex = 0.8, fill = legend_cols, title = "Community Size")
 }
 
 #ChallengeD
-Challenge_D <- function() {
-    
+Coalescence <- function(size, speciation_rate) {
+    lineages <- rep(1, size)
+    abundances <- vector()
+    N = size
+    O = speciation_rate * ((size - 1) / (1 - speciation_rate))
+
+    repeat {
+        linsamp <- 1:length(lineages)
+        j <- sample(linsamp, 1)
+        randnum <- runif(1)
+        if (randnum < O / (O + N - 1)){
+            abundances <- c(abundances, lineages[j])
+        }
+        if (randnum >= O / (O + N - 1)){
+            i <- sample(linsamp[linsamp != j], 1)
+            lineages[i] <- lineages[i] + lineages[j]
+        }
+        lineages <- lineages[-j]
+        N = N - 1
+        if (N == 1){
+            break
+        }
+    }
+
+    abundances <- c(abundances, lineages)
+    return(octaves(species_abundance(abundances)))
+}
+
+Equivalent <- function(size, speciation_rate, repeats) {
+    communitymax <- init_community_max(size)
+    for (i in 1:(size * 2)) {
+        communitymax <- neutral_generation_speciation(communitymax, speciation_rate)
+    }
+
+    oct_interval <- size / 5
+    octax <- octaves(species_abundance(communitymax))
+    n <- 1
+    generations <- (repeats - 1) * oct_interval
+
+    for (i in 1:generations) {
+        communitymax <- neutral_generation_speciation(communitymax, speciation_rate)
+        if (i %% oct_interval == 0) {
+            n <- n + 1
+            octax <- sum_vect(octax, octaves(species_abundance(communitymax)))
+        }
+    }
+    meanoctax <- octax / n
+
+    return(meanoctax)
+}
+
+Challende_D <- function(size = 100, speciation_rate = 0.1, repeats = 100) {
+    Coal <- rep(0, 5)
+    start_time <- proc.time()[3]
+
+    for (i in 1:repeats) {
+        Coal <- sum_vect(Coal, Coalescence(size, speciation_rate))
+    }
+    Coal <- Coal / repeats
+    Coal_time <- proc.time()[3] - start_time
+
+    Equ <- Equivalent(size, speciation_rate, repeats)
+    Equ_time <- proc.time()[3] - start_time
+
+    sim16 <- data.frame(Standard_sim = Equ[1:6], Coalescence_sim = Coal[1:6], row.names = 1:6)
+    color.names <- c("#a8ff37", "#b260ff")
+    barplot(t(sim16), beside = TRUE, col = color.names, xlab = "Octaves", ylab = "Abundance", ylim = c(0, max(sim16$Standard_sim)*1.2))
+    legend("top", rownames(t(sim16)), cex = 0.8, fill = color.names, title = "Simulation", bty = "n")
+
+    Answer <- paste("The coalescence simulation is", Equ_time/Coal_time, 
+    "faster than the one we used for the cluster, a difference of",
+    (Equ_time - Coal_time) / 60^2, "in CPU hours in this particular case.",
+    "This is because it is a model, of what you would expect the species richness distribution to be at dynamic", 
+    "equilibrium for a given speciation rate and community size instead of building", 
+    "the species distribution through a more organic process of successive generations",
+    "of random change from some arbitrary starting distribution. It only has to", 
+    "assign a lineage to each individual of the species based on coalescence theory,", 
+    "instead of having to model how that lineage and other lineages change over time,",
+    "many such lineages going extinct, and all the inbetween states of the system", 
+    "being unneccessary inbetween steps.")
+    print(Answer)
 }
 
 #Question21

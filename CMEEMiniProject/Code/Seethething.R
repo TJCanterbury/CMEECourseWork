@@ -32,14 +32,20 @@ RepL
 LRan<-subset(CompareAIC, Range > 30)
 SRan<-subset(CompareAIC, Range < 30)
 
-LTBS.test <- t.test(LRan$Briere, LRan$Schoolfield)
+as.data.frame.htest <- function(x) {
+    x <- unclass(x)
+    names <- c("statistic", "estimate", "parameter", "p.value")
+    x <- x[names]
+    x <- x[!sapply(x, is.null)]
+    for (i in seq_along(x)) {
+        if (!is.null(names(x[[i]])))
+            names(x)[i] <- names(x[[i]])
+    }
+    as.data.frame(x, stringsAsFactors = FALSE)
+}
 
-t.test(LRan$Quadratic, LRan$Schoolfield)
-t.test(LRan$Quadratic, LRan$Briere)
-t.test(SRan$Briere, SRan$Schoolfield)
-t.test(SRan$Quadratic, SRan$Schoolfield)
-t.test(SRan$Quadratic, SRan$Briere)
-t.test(CompareAIC$Quadratic, CompareAIC$Schoolfield)
+knitr::kable(t.test(CompareAIC$Quadratic, CompareAIC$Schoolfield), "latex")
+
 t.test(CompareAIC$Quadratic, CompareAIC$Briere)
 t.test(CompareAIC$Briere,CompareAIC$Schoolfield)
 
