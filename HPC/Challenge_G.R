@@ -1,1 +1,0 @@
-G=function(s=c(8,6),r=pi/2,l=1/2,d=-1){"if"(l==1/2,plot(8,8,'n'));lines(rbind(s,e<-s+l*c(cos(r),sin(r))));if(l>0.01){G(e,r+pi/4*-d,l*3/8,d);G(e,r,l*8/9,-d)}}

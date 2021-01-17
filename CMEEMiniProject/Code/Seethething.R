@@ -1,6 +1,5 @@
 library('tidyverse')
 library('ggplot2')
-library('lme4')
 
 #read
 CompareAIC <- read.csv('../Results/res.csv')%>%
@@ -10,69 +9,48 @@ CompareAIC <- read.csv('../Results/res.csv')%>%
 row_sub = apply(CompareAIC, 1, function(row) all(row !=0))
 CompareAIC <- CompareAIC[row_sub,]
 CompareAIC <- CompareAIC[complete.cases(CompareAIC), ]
-#Prep for kite
+#Prep
 ComAIC <- CompareAIC %>% 
     as.data.frame %>% 
     gather(Model, AIC, Schoolfield:Quadratic)
 
-#Prep fpr range
-LargeRan<-subset(ComAIC, Range > 30)
-SmallRan<-subset(ComAIC, Range < 30)
-
-#range mixed linear models
-lmmH<-lm(AIC~ as.factor(Model) + 1 + (1|n), data=LargeRan)
-summary(lmmH)
-RepR = 2153.7/(2153.7+436.6)
-RepR
-lmmL<-lmer(AIC~ Model + 1 + (1|n), data=SmallRan)
-summary(lmmL)
-RepL <- 2304/(2304+465)
-RepL
-
-LRan<-subset(CompareAIC, Range > 30)
-SRan<-subset(CompareAIC, Range < 30)
-
-as.data.frame.htest <- function(x) {
-    x <- unclass(x)
-    names <- c("statistic", "estimate", "parameter", "p.value")
-    x <- x[names]
-    x <- x[!sapply(x, is.null)]
-    for (i in seq_along(x)) {
-        if (!is.null(names(x[[i]])))
-            names(x)[i] <- names(x[[i]])
-    }
-    as.data.frame(x, stringsAsFactors = FALSE)
-}
-
-knitr::kable(t.test(CompareAIC$Quadratic, CompareAIC$Schoolfield), "latex")
-
-t.test(CompareAIC$Quadratic, CompareAIC$Briere)
-t.test(CompareAIC$Briere,CompareAIC$Schoolfield)
-
-#plot Habitat
-pdf("../Results/Hab.plot.pdf")
-hab <- qplot(AIC, colour = Model, facets = ConTempMethod ~., data = ComAIC, geom =  "density")
-print(hab)
+pdf("../Results/piechart.pdf")
+n <- length(CompareAIC$Briere)
+slices <- round(c(sum(CompareAIC$Schoolfield == 1) / n, sum(CompareAIC$Briere == 1) / n, sum(CompareAIC$Quadratic == 1) / n), 3) * 100
+lbls <- c("Sharpe-Schoolfield", "Briere", "Quadratic")
+lbls <- paste(lbls, slices)
+lbls <- paste(lbls,"%",sep="")
+piech <- pie(slices,labels = lbls, col=c('#6820a3', '#649417', '#747474'),
+   main=paste("Number of IDs modelled = ", n))
+print(piech)
 dev.off()
 
 #Plot Range
 pdf("../Results/Rangeplot.pdf")
 Range <- qplot(Range, AIC, data = ComAIC, geom = c("point", "smooth"), 
-      colour = Model, xlab = 'Temperature Range (K)', ylim = c(0,1)) 
+      colour = Model, ylab = 'Prob(min vs. i)', xlab = 'Temperature Range (K)', ylim = c(0,1)) 
 print(Range)
 dev.off()
 
-#plot sample sizes
-pdf("../Results/Samplesplot.pdf")
-sam <- qplot(Density, AIC, data = ComAIC, geom = c("point", "smooth"), 
-      colour = Model, xlab = 'Sample Size', ylim = c(0,1)) 
-print(sam)
-dev.off()
+group_parameter <- function(a, b, param){
+    a <- data.frame('Value' = a, 'Group' = rep('Mathematically Estimated', length(a)))
+    b <- data.frame('Value' = b, 'Group' = rep('Best Fit', length(b)))
+    c <- rbind(a, b)
+    c <- data.frame(c, 'Parameter' = param)
+    return(c)
+}
 
-#plot all the Data ungrouped
-pdf("../Results/AICs.pdf", onefile=FALSE)
-boopp <- ggplot(ComAIC, aes(x = AIC, fill = Model)) + geom_density(alpha=0.5)+
-    geom_vline(xintercept=mean(AIC), size=1.5) + xlim(0, 1) +
-    theme(panel.grid = element_blank(), axis.title.x = element_blank())
-print(boopp)
+# make data.frame for parameter values
+B0 <- group_parameter(CompareAIC$B01, CompareAIC$B0, 'B0')
+El <- group_parameter(CompareAIC$El1, CompareAIC$El, 'El')
+Eh <- group_parameter(CompareAIC$Eh1, CompareAIC$Eh, 'Eh')
+Tl <- group_parameter(CompareAIC$Tl1, CompareAIC$Tl, 'Tl')
+Th <- group_parameter(CompareAIC$Th1, CompareAIC$Th, 'Th')
+E <- group_parameter(CompareAIC$E1, CompareAIC$E, 'E')
+data <- rbind(B0, El, Eh, Tl, Th, E)
+
+#plot parameter values, both those mathematically estimated and those that gave the best fit
+pdf("../Results/Params.pdf", onefile=FALSE)
+p <- ggplot(data, aes(x = Value, fill = Group )) +  geom_density(alpha=0.5) + facet_wrap( .~ Parameter, scales = "free")
+print(p)
 dev.off()
