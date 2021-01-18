@@ -18,6 +18,7 @@ for ( i in 1:100000 ){
         number_bigger = number_bigger + 1
     }
     }
-#calculate p value
+
+# Calculate p value
 p = number_bigger/100000
 print(paste( "The p value for this correlation = ", p))

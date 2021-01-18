@@ -28,7 +28,7 @@ def residuals_quad(params, t, data):
 	#Get an ordered dictionary of parameter values
 	v = params.valuesdict()
 	
-	#Quadratic model
+	#Cubic model
 	model = v['a']*t**2 + v['b']*t + v['c']
 
 	return model - data     #Return residuals
@@ -147,6 +147,160 @@ def variance(data):
 	variance = sum(deviations) / n
 	return variance
 
+def Lin_Mod(Data, ID, plot):
+	""" Outputs parameter estimates and AIC for a given model and starting values """
+	Type = ['Schoolfield', 'Briere', 'Quadratic']
+	Colour = ['purple', 'green', 'orange']
+	tmp = Data[Data[:,0]==ID]
+	# array for AIC scores
+	Scores = np.zeros(18)
+	escaping = np.zeros(18)
+	if len(tmp) < 6 :
+		print('ID: ', ID, ' sample size is: ', len(tmp), ' so skipped')
+		return escaping
+	
+	#Shift data up
+	shifty = 0
+	if min(tmp[:,2]) < 0 :
+		shifty = abs(min(tmp[:,2]))
+		tmp[:,2] = tmp[:,2] + shifty
+	
+	tmp[:,1] = 273.15+tmp[:,1]
+	minT = min(tmp[:,1])
+	maxT = max(tmp[:,1])
+
+	for i in Type :
+							
+		if i == 'Quadratic':
+			colour = Colour[2]
+			resid = residuals_quad 
+			params = Define_Parameters(['a','b','c'], [2,2,2])
+			j = 3
+			
+			#create minimzer object
+			minner = Minimizer(resid, params, fcn_args=(tmp[:,1], tmp[:,2]))
+						
+			#Perform the minimization
+			best_mod = minner.minimize(method = 'leastsq')
+
+			F = variance(best_mod.residual)/variance(tmp[:,2])
+			alpha = 0.05
+			p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
+			if p_value > alpha:
+				print("ID ", ID, " Not significant")
+				return escaping
+			Scores[j] = best_mod.aic
+
+		if i == 'Schoolfield':
+			colour = Colour[0]
+			resid = residuals_school
+			params = Starting_vals_school(tmp)
+			j = 1
+			
+			#create minimzer object
+			minner = Minimizer(resid, params, fcn_args=(tmp[:,1], tmp[:,2]))
+
+			#Perform the minimization
+			fit_Mod1 = minner.minimize(method = 'leastsq')
+			best_mod = fit_Mod1
+			best_score = fit_Mod1.aic
+			Scores[j] = fit_Mod1.aic
+
+			for l in range(10):
+				try:
+					params = Starting_vals_school(tmp, True)
+
+					#create minimzer object
+					minner = Minimizer(resid, params, fcn_args=(tmp[:,1], tmp[:,2]))
+	
+					#Perform the minimization
+					fit_Mod = minner.minimize(method = 'leastsq')
+					if fit_Mod.aic < best_score :
+						best_mod = fit_Mod
+						best_score = fit_Mod.aic
+						Scores[j] = fit_Mod.aic
+				except:
+					pass
+
+			F = variance(best_mod.residual)/variance(tmp[:,2])
+			alpha = 0.05
+			p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
+			if p_value > alpha:
+				print("ID ", ID, " Not significant")
+				return escaping
+			
+			# Extract parameter values
+			par_dict = best_mod.params.valuesdict().values()
+			School_best_par = np.array(list(par_dict))
+			Scores[6:12] = School_best_par
+			par_dict = fit_Mod1.params.valuesdict().values()
+			School_Mod1_par = np.array(list(par_dict))
+			Scores[12:18] = School_Mod1_par
+
+		if i == 'Briere':
+			colour = Colour[1]
+			resid = residuals_Briere
+			params = Starting_vals_Briere(tmp)
+			j = 2
+
+			#create minimzer object
+			minner = Minimizer(resid, params, fcn_args=(tmp[:,1], tmp[:,2]))
+			
+			#Perform the minimization
+			fit_Mod = minner.minimize(method = 'leastsq')
+			best_mod = fit_Mod
+			best_score = fit_Mod.aic
+			Scores[j] = fit_Mod.aic
+			
+			for l in range(10):
+				try:
+					
+					params = Starting_vals_Briere(tmp, Ran = True)
+					#create minimzer object
+					minner = Minimizer(resid, params, fcn_args=(tmp[:,1], tmp[:,2]))
+					
+					#Perform the minimization
+					fit_Mod = minner.minimize(method = 'leastsq')
+					if fit_Mod.aic < best_score :
+						best_mod = fit_Mod
+						best_score = fit_Mod.aic
+						Scores[j] = fit_Mod.aic
+				except:
+					pass
+			F = variance(best_mod.residual)/variance(tmp[:,2])
+			alpha = 0.05
+			p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
+			if p_value > alpha:
+				print("ID ", ID, " Not significant")
+				return escaping
+
+		if plot == 'Plot':        # Plot this model type
+			print(i)
+			print(report_fit(best_mod))
+			t_vec = np.linspace(minT,maxT,1000)
+			N_vec = np.ones(len(t_vec))
+			residual_smooth = resid(best_mod.params, t_vec, N_vec)
+			predictedVal = residual_smooth + N_vec
+			p.plot(t_vec, (predictedVal - shifty), colour, linestyle = '--', linewidth = 1)
+	MiNScore = min(Scores[1:4])
+	Scores[0] = ID
+	Scores[1] = np.exp((MiNScore-Scores[1])/2)
+	Scores[2] = np.exp((MiNScore-Scores[2])/2)
+	Scores[3] = np.exp((MiNScore-Scores[3])/2)
+	Scores[4] = maxT - minT
+	Scores[5] = (maxT - minT)/len(tmp)
+
+	if plot == 'Plot':  
+		p.plot(tmp[:,1], (tmp[:,2] - shifty), 'b+')
+		p.legend(fontsize = 10, labels = ['Schoolfield', 'Briere', 'Quadratic', 'Data'])
+		p.xlabel('Temperature (K)', fontsize = 10)
+		p.ylabel('Original Trait Valaue', fontsize = 10)
+		p.ticklabel_format(style='scientific', scilimits=[0,3])
+		p.title('ID :' + str(ID))
+		p.savefig('../Results/plot110.pdf')
+		p.close()
+	return(Scores)
+
 def Mod_it(tmp, resid, starter):
 	""" Generate model and return AIC score and parameter values """
 	#create minimzer object
@@ -160,22 +314,22 @@ def Mod_it(tmp, resid, starter):
 def Schoolfield_Model(Data, n):
 	""" Build Sharpe-Schoolfield Models and return mathematically estimated and the best fit models """
 
-	S_Math_Mod = Mod_it(Data, residuals_school, Starting_vals_school(Data))
+	S_Math_Mod = Mod_it(Data, residuals_quad, Starting_vals_school(Data))
 	S_Best_Mod = S_Math_Mod
 
-	for _ in range(n):
+	for l in range(n):
 		try:
 			# Schoolfield:
-			S_Ran_Mod = Mod_it(Data, residuals_school, Starting_vals_school(Data, True))
+			S_Ran_Mod = Mod_it(Data, residuals_quad, Starting_vals_school(Data, True))
 			if S_Ran_Mod.aic < S_Best_Mod.aic :
 				S_Best_Mod = S_Ran_Mod
 		except:
 			pass
 	
 	# Check if bad model:
-	F = variance(S_Best_Mod.residual)/variance(Data[:,2])
+	F = variance(S_Best_Mod.residual)/variance(tmp[:,2])
 	alpha = 0.05
-	p_value = scipy.stats.f.cdf(F, len(Data)-1, len(Data)-1)
+	p_value = scipy.stats.f.cdf(F, len(tmp)-1, len(tmp)-1)
 	if p_value > alpha:
 		return(0,0)
 
@@ -187,9 +341,9 @@ def Briere_Model(Data, n):
 	B_Math_Mod = Mod_it(Data, residuals_Briere, Starting_vals_Briere(Data))
 	B_Best_Mod = B_Math_Mod
 
-	for _ in range(n):
+	for l in range(n):
 		try:
-			B_Ran_Mod = Mod_it(Data, residuals_Briere, Starting_vals_Briere(Data, True))
+			B_Ran_Mod = Mod_it(Data, residuals_quad, Starting_vals_Briere(Data, True))
 			if B_Ran_Mod.aic < B_Best_Mod.aic :
 				B_Best_Mod = B_Ran_Mod
 		except:
@@ -207,37 +361,37 @@ def Briere_Model(Data, n):
 def Linear_Model(Data):
 	""" Build Linear Model of chosen type (eg quadratic, cubic and beyond) and return best fit model """
 	
-	Lin_Mod = Mod_it(Data, residuals_quad, Define_Parameters(['a','b','c'], [2,2,2]))
+	B_Math_Mod = Mod_it(tmp, residuals_quad, Define_Parameters(['a','b','c'], [2,2,2]))
 	
 	# Check if bad model:
-	F = variance(Lin_Mod.residual)/variance(Data[:,2])
+	F = variance(B_Best_Mod.residual)/variance(Data[:,2])
 	alpha = 0.05
 	p_value = scipy.stats.f.cdf(F, len(Data)-1, len(Data)-1)
 	if p_value > alpha:
 		return 0
 	
-	return(Lin_Mod)
+	return(B_Best_Mod)
 
-def Figure_1(Data, ID, Mod1, Mod2, Mod3, Colour, minT, maxT, shifty):
+def Figure_1(Mod1, Mod2, Mod3, Colour):
 	t_vec = np.linspace(minT,maxT,1000)
 	N_vec = np.ones(len(t_vec))
 
 	# Schoolfield:
-	residual_smooth = residuals_school(Mod1.params, t_vec, N_vec)
+	residual_smooth = resid(Mod1.params, t_vec, N_vec)
 	predictedVal = residual_smooth + N_vec
 	p.plot(t_vec, (predictedVal - shifty), Colour[1], linestyle = '--', linewidth = 1)
 
 	#Briere:
-	residual_smooth = residuals_Briere(Mod2.params, t_vec, N_vec)
+	residual_smooth = resid(Mod2.params, t_vec, N_vec)
 	predictedVal = residual_smooth + N_vec
 	p.plot(t_vec, (predictedVal - shifty), Colour[2], linestyle = '--', linewidth = 1)
 
 	#Quad:
-	residual_smooth = residuals_quad(Mod3.params, t_vec, N_vec)
+	residual_smooth = resid(Mod3.params, t_vec, N_vec)
 	predictedVal = residual_smooth + N_vec
 	p.plot(t_vec, (predictedVal - shifty), Colour[3], linestyle = '--', linewidth = 1)
 
-	p.plot(Data[:,1], (Data[:,2] - shifty), 'b+')
+	p.plot(tmp[:,1], (tmp[:,2] - shifty), 'b+')
 	p.legend(fontsize = 10, labels = ['Schoolfield', 'Briere', 'Quadratic', 'Data'])
 	p.xlabel('Temperature (K)', fontsize = 10)
 	p.ylabel('Original Trait Valaue', fontsize = 10)
@@ -250,6 +404,7 @@ def ith_Result(Data, ID, n = 10, plot = 257):
 	""" Takes Data, fits the Schoolfield, Briere and Quadratic models to the data for the given ID;
 		Then Outputs parameter estimates, AIC scores and temperature range for a given ID """
 	tmp = Data[Data[:,0]==ID]
+	Type = ['Schoolfield', 'Briere', 'Quadratic']
 	Colour = ['purple', 'green', 'orange']
 
 	# array for AIC scores
@@ -272,26 +427,21 @@ def ith_Result(Data, ID, n = 10, plot = 257):
 	maxT = max(tmp[:,1])
 
 	# Generate Models:
-	#Quad:
-	Quad_mod = Linear_Model(tmp)
-	#If modelling failed return zeros
-	if Quad_mod == 0:
-		return Scores 
+	# Schoolfield:
+	Math_Schoolfield_mod, Best_Schoolfield_mod = Schoolfield_Model(tmp, n)
 
 	#Briere:
 	Briere_mod = Briere_Model(tmp, n)
-	#If modelling failed return zeros
-	if Briere_mod == 0:
-		return Scores 
 
-	# Schoolfield:
-	Math_Schoolfield_mod, Best_Schoolfield_mod = Schoolfield_Model(tmp, n)
+	#Quad:
+	Quad_mod = Quadratic_Model(tmp)
+
 	#If modelling failed return zeros
-	if Best_Schoolfield_mod == 0:
-		return Scores 
+	if Best_Schoolfield_mod == 0 | Briere_mod == 0 | Quad_mod == 0:
+		return Scores
 
 	if ID == plot:
-		Figure_1(tmp, ID, Best_Schoolfield_mod, Briere_mod, Quad_mod, Colour, minT, maxT, shifty)
+		Figure_1(Best_Schoolfield_mod, Briere_Mod, Quad_mod, Colour)
 
 	# Allocate scores:
 	Scores[0] = ID
@@ -319,30 +469,38 @@ def ith_Result(Data, ID, n = 10, plot = 257):
 
 	return(Scores)
 
+
 def main(argv):
 	""" Build Linear model and prints parameter estimates and AIC """
-	#read in data
+	#prep
 	fields = ['ID', 'ConTemp', 'OriginalTraitValue']
+	Num = int(argv[2])
+	
+	#read in data
 	TempResp = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float}) 
 	TempResp = np.array(TempResp, dtype = float)
 	TempResp[:,[1, 2]] = TempResp[:,[2, 1]]
-	Num = int(argv[3])
 
-	# Option Stats: Record best AICs for each ID
-	paras = np.zeros((Num-1, 18))
-	print('Schoolfield', 'Briere', 'Quadratic', end = '\n')
-	for i in range(1, Num):
-		# For each ID attempt to fit every model, if this fails move on to next ID
-		try:
-			paras[i-1,:] = ith_Result(TempResp, i, plot = int(argv[2]))
-			if max(paras[i-1, 1:4]) == 1:
-				print('ID: ', i, ' ', 'Schoolfield AIC: ', paras[i-1,1], 'Briere AIC: ', paras[i-1,2], 'Quadratic AIC: ', paras[i-1,3], end="\n")
-		except:
-			pass
-	
-	Paras = pd.DataFrame(paras, columns = ['ID', 'Schoolfield', 'Briere', 'Quadratic', 'Range', 'Density', 'B0', 'El', 'Eh', 'Tl', 'Th', 'E', 'B01', 'El1', 'Eh1', 'Tl1', 'Th1', 'E1'])
-	Paras.to_csv('../Results/res.csv')
-	print('\n')
+	# Option Plot: Best fit for ID given by argv[2]
+	if argv[3] == 'Plot':
+		Lin_Mod(TempResp, Num, argv[3])
+
+	# Option Stats: Record best AICs for each ID up to ID given by argv[2]
+	if argv[3] == 'Stats':
+		paras = np.zeros((Num-1, 18))
+		print('Schoolfield', 'Briere', 'Quadratic', end = '\n')
+		for i in range(1, Num):
+			# For each ID attempt to fit every model, if this fails move on to next ID
+			try:
+				paras[i-1,:] = Lin_Mod(TempResp, i, argv[3])
+				if max(paras[i-1, 1:4]) == 1:
+					print('ID: ', i, ' ', 'Schoolfield AIC: ', paras[i-1,1], 'Briere AIC: ', paras[i-1,2], 'Quadratic AIC: ', paras[i-1,3], end="\n")
+
+			except:
+				pass
+		Paras = pd.DataFrame(paras, columns = ['ID', 'Schoolfield', 'Briere', 'Quadratic', 'Range', 'Density', 'B0', 'El', 'Eh', 'Tl', 'Th', 'E', 'B01', 'El1', 'Eh1', 'Tl1', 'Th1', 'E1'])
+		Paras.to_csv('../Results/res.csv')
+		print('\n')
 	return 0
 
 if __name__ == "__main__": 

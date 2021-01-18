@@ -5,11 +5,8 @@
 # Arguments: None
 # Date: Nov 2020
 
-#Figure 1, ID 257
-python3 Mod.py '../Data/ThermRespData.csv' 257 'Plot'
-
-#AIC Data
-python3 Mod.py '../Data/ThermRespData.csv' 903 'Stats'
+#Generate results and Figure 1 using ID 257
+python3 Mod.py '../Data/ThermRespData.csv' 257 903
 
 #Other Figures
 Rscript Seethething.R

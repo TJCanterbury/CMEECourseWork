@@ -8,6 +8,7 @@ if (a == TRUE){
 z <- runif(1) ## Generate a uniformly distributed random number
 if (z <= 0.5) {print ("Less than a half")}
 
+# Square 1 to 10
 for (i in 1:10){
     j <- i * i
     print(paste(i, " squared is", j ))

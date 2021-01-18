@@ -28,12 +28,16 @@ def main(argv):
     R0 = 10
     C0 = 5 
     RC0 = np.array([R0, C0])
+
+    #Use provided arguments
     if (len(sys.argv) == 6):
         r, a, z, e, K = float(argv[1]), float(argv[2]), float(argv[3]), float(argv[4]), float(argv[5])
         arguments = "r = " + str(r) + ", a = " + str(a) + ", z = " + str(z) + ", e = " + str(e) + ", K = " + str(K)
         pops, infodict = integrate.odeint(dCR_dt, RC0, t, args = (r, a, z, e, K), full_output=True)
         print("Final (non-zero) population values:")
         print(pops[-1])
+    
+    #If missing arguments use defaults arguments
     if(len(sys.argv) != 6):
         print("using default arguments for r, a, z and e")
         arguments = "r = 1, a = 0.1, z = 1.5, e = 0.75, K = 50"

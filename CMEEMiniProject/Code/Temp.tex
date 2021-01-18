@@ -24,34 +24,38 @@
 
   \section{An Introduction} 
   The ecological importance of temperature across species can be seen in their numerous physiological, morphological and 
-  behavioural adaptations for temperature homeostasis. This and the potential lethality of relatively 
-  high or low temperatures, forcing some species to even hibernate or aestivate within their 
-  own niches, tells us maintaining a particular body temperature is 
-  an inescapable hurdle for evolution. This leads us to ask by what mechanism does the 
-  temperature of an organisms' environment effect it's biology and so have this impact on the 
-  ecology and evolution of species. \\
-  When we look at temperature performance curves, the relationship between biologicval traits and the temperature of an organisms' environment, we 
-  see a complex picture. We do not simply see a normal distribution about an optimal temperature but an asymmetrical curve. It is suggested by metabolic theory 
-  that these temperature response curves reflect the direct effects of temperature on the biochemical reactions relevant to the trait. The Sharpe-Schoolfield 
-  model is a model built on this hypothesis and is the focus of this report. \\
-  The Sharpe-Schoolfield Model has been adapted for non linear regression modelling and is built on the following explanation of temperature performance curves. 
-  Chemical reactions have an activation energy, the threshold energy requirement for a collision between reactants to result in a reaction. This threshold can 
-  be lowered through catalytic enzymes which are reusable and so should reduce the cost on the organism to release this energy from other 
-  sources. However, the shapes of enzymes are not rigid and may denature at high temperatures to the point of inactivation or destruction. We see 
-  a more gentle decrease in performance at lower temperatures as the probability of a high energy collision between reactant and enzyme decreases.\\
-  In this report I investigate the performace of this model in comparison to 2 phenomological models, one being a generalised Briere model, which is non-linear; 
-  and the other a simple quadratic model which is linear. \\
+  behavioural adaptations for thermoregulation, from insects to marine mammals \cite{Castellini2018,Heinrich2009}, and in the effect of temperature
+  on species distributions \cite{Woodward1988,Buckley}. To better anticipate and respond to the observed changes in climate \cite{RoyalSociety}
+  we need a better understanding of the biotic feedback from changes in temperature, and of variation
+  in tolerances between species to changes in temperature \cite{Buckley}. So the purpose of this report is to evaluate the performance of our best models
+  for understanding this relationship.\\
+  Across taxa there is a repeating pattern in the relationship between temperature and biological traits that we call a temperature performance curve (TPC). 
+  It is believed by metabolic theorists that TPCs reflect the direct effects 
+  of temperature on the biochemical reactions relevant to the trait measured and I'd argue the consistency in this relationship between taxa \cite{Dell2011a}, including 
+  very simple organisms such as bacteria with well known policy implications in food hygeine \cite{Zwietering1991b}, suggests that this may be true. 
+  The thinking behind our current best models of TPCs are based on the understanding that much of the metabolic reactions in living organisms are 
+  mediated by catalytic enzymes. \\
+  The Sharpe-Schoolfield model is a mechanistic model that has been derived for the purpose of regressional 
+  analysis of TPCs, under the above assumption that they are the product of the behaviour of catalytic enzymes under different temperatures and that we can make 
+  estimates of the parameters governing this behaviour through measurements of the shape of TPCs \cite{Schoolfield1981}. The shapes of enzymes are not 
+  rigid and may denature at high temperatures and so reaction rate is sharply reduced. We see a more gentle decrease in performance at lower temperatures as the probability of a high energy collision 
+  between reactant and enzyme decreases. We define the threshold energy requirement for successful reaction to be the activation energy; it is believed that
+  one of the key roles of catalytic enzymes is to reduce this activation energy. \\ 
+  I will use model fitting methods to evaluate the performance of the Sharpe-Schoolfield model incomparison to 2 phenomological models, one being a 
+  generalised Briere model, which is non-linear; 
+  and the other a simple quadratic model which is linear. I shall go into more detail about the nature of all 3 of these models in the models section. \\
+
 
   \section{The Data}
   The dataset I use broadly holds performance data for photosynthesis and respiration at different temperatures. 
-  Photosynthesis and respiration are well understood, vital life processes and both have some of their reactants 
-  and products in the air making them relatively easy targets for study and modelling. There is considerable variance 
-  in sample size and temperature range between IDs in the Dataset and so I examine the effect of this variation. 
+  Photosynthesis and respiration are well understood, vital life processes governing transfers of energy, so very attractive traits for metabolic ecologists,
+  and both have some of their reactants and products in the air making them relatively easy targets for study. There is considerable variance 
+  in temperature range between IDs in the Dataset and so I examine the effect of this variation. 
   A large amount of IDs also have sample sizes below 6 
-  and so these are excluded from the analysis as the larger sample sizes are required to fit a Sharpe-Schoolfield model. \\
+  and so these are excluded from the analysis, as a sample size of at least 6 is required to fit a Sharpe-Schoolfield model. \\
   The data also comes from different species, coming from different habitats. We might expect differences in the peak performance 
   temperatures between species depending on the particular ecologies of the different species but this is not the focus 
-  of this report.\\
+  of this report. \\
  
   \section{The Models}
   I built 3 models for comparison, one being a simple linear quadratic model, one being a Briere model and one being a Sharpe-Schoolfield model.\\
@@ -65,8 +69,8 @@
   Briere Model \cite{Brierea} is a phenomological, non linear model that was designed to take the shape of a temperature response curve, 
   specifically that of temperature dependent development rates of arthropods. It takes 4 parameters, the minimum (T\textsubscript{0}) and maximum (T\textsubscript{m}) 
   feasible temperatures of the trait and B\textsubscript{0} as a normalisation constant and m for generalising the shape for other sorts of temperature
-   curve. With 2 of the parameters in this model being more biologically meaning and the shape of the curve being more custom for temperature
-    performance curves you would expect this to perform better than a quadratic model.\\
+  curve. With 2 of the parameters in this model being more biologically meaning and the shape of the curve being more custom for temperature
+  performance curves you would expect this to perform better than a quadratic model.\\
 
   \begin{equation}
     \begin{split}
@@ -89,9 +93,9 @@
   defined as T\textsubscript{h} and the energy is defined as E\textsubscript{h} which are the Temperature and energy at which 50\% of enzyme units 
   are inactive on the hotter side of the curve. We see a more gentle decrease in performance at lower temperatures 
   as the probability of a high energy collision between reactants and enzymes decreases, the model represents this
-   with T\textsubscript{l} and E\textsubscript{l}, which are the energy and temperature when the performance is at half on the cooler side of the 
-   curve. B\textsubscript{0} is then the real rate performance of the trait at a reference temperature of 283.15 kelvin, 
-   intended to normalise the curves for comparison. \\
+  with T\textsubscript{l} and E\textsubscript{l}, which are the energy and temperature when the performance is at half on the cooler side of the 
+  curve. B\textsubscript{0} is then the real rate performance of the trait at a reference temperature of 283.15 kelvin, 
+  intended to normalise the curves for comparison. \\
   
   \begin{equation}
     B = \frac{B_0 e^{\frac{-E}{k} (\frac{1}{T} - \frac{1}{283.15})}}
@@ -105,17 +109,21 @@
   proportional difference between the best model for each dataset and the other models. 
 
   \section{The Results}
-  I found that Schoolfield comes out on top in AIC but the overlap in performance between the models is considerable. 
+  I found that Schoolfield comes out on top in AIC but the overlap in performance between the models is considerable as shown in Figure 3. 
   In Figure 1 we see an example fit of ID 257 and you can see why Schoolfield 
   might be outperforming the other 2 models. It has a greater flexibility in shape due to the 
   additional parameters and in particular we can see it can do much sharper turns at the inflection point at 
   the peak of the curve. Figure 2 shows the probability that each model will give the best fit and we see that around 50\% of the time
-  the Sharpe-Schoolfield Model wins which does not sound that impressive. Looking deeper into the data however reveals a possible reason, the 
-  Quadratic model performs particularly well when the data 
-  occupies a smaller range of temperatures, which we see in figure 3.\\
+  the Sharpe-Schoolfield Model wins which does not sound that impressive. \\
+  Looking deeper into the data however reveals a possible reason, the Quadratic model performs particularly well when the data 
+  occupies a smaller range of temperatures, which we see in figure 3. Clearly however the relationship between temperature range and
+  the performances of the different models is not linear, clearly other variables must be having an effect. \\
   Looking at Figure 4, the best fit parameter values for 
   the Sharpe-Schoolfield model are usually not so different from the 
-  mathematically estimated values and appear biologically plausible.
+  mathematically estimated values and appear biologically plausible except for T\textsubscript{h} and T\textsubscript{l} 
+  that show a bimodal distribution in the mathematically estimated parameter values. There is a consistency in best fit parameter values 
+  around particular values, save for B\textsubscript{0} which we would expect to vary considerably so that the model will fit to 
+  the different kinds of biological trait data being modelled.
   
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/plot110.pdf}
@@ -124,7 +132,7 @@
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/piechart.pdf}
-    Figure 2. Percentage of IDs where each model gave the best performer by AIC score. 
+    Figure 2. The best AIC scores grouped by their respective model and represented as percentages. 
   \end{figure}
 
   \begin{figure}[]
@@ -135,7 +143,7 @@
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Params.pdf}
-    Figure 4. Both mathematicalle estimated and best fit Parameter valuesfor the Sharpe-Schoolfield model.
+    Figure 4. Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
   \end{figure}
 
   \section{Discussion}
@@ -171,5 +179,5 @@
 
 
   \bibliographystyle{plain}
-  \bibliography{CMEE}
+  \bibliography{CMEE.bib}
 \end{document}
