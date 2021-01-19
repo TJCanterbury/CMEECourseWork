@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Author: Tristan JC tjc19@ic.ac.uk
+# Author: CMEE Group 1
 # Script: run_get_TreeHeight.sh
 # Desc: Run a script to find the tree heights of a given csv file
 # Arguments: .csv file with tree angles and and horizontal distances 

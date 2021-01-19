@@ -34,33 +34,31 @@ def discreteLotVolt_norm(pops,r,a,z,e,K):
 def plot_norm(pops,t,txtstr):
     """Plotting the figures"""
     time = range(0,t,1) #time vector for plotting
+    
     #Figure 1
     f1 = p.figure()
+    f1.suptitle('Consumer-Resource Population Dynamics',  fontsize=14, fontweight='bold')
     ax = f1.add_subplot(111)
+    ax.set_title(txtstr) # plots parameters
     p.plot(time,pops[:,0], 'g-', label='Resource Density')
     p.plot(time, pops[:,1], 'b-', label='Consumer Density')
     p.grid()
-    p.legend(loc='best')
-    #plotting the text box:
-    ax.text(0, max(pops[:,0])*0.75, txtstr, style='italic', fontsize=12, 
-        bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
+    p.legend(loc=1)
     p.xlabel('Time')
     p.ylabel('Population Density')
-    p.title('Consumer-Resource Population Dynamics')
     f1.savefig('../Results/LV4_model.pdf')
 
     #figure 2
     f2 = p.figure()
+    f2.suptitle('Consumer-Resource Population Dynamics',  fontsize=14, fontweight='bold')
     ax = f2.add_subplot(111)
+    ax.set_title(txtstr) # plots parameters
     p.xlim(0,max(pops[:,0]))
     p.ylim(0,max(pops[:,1]))
     p.plot(pops[:,0],pops[:,1],'r-')
     p.grid()
-    ax.text(0, max(pops[:,1])*0.75, txtstr, style='italic', fontsize=12, 
-        bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
     p.xlabel('Resource Density')
     p.ylabel('Consumer Density')
-    p.title('Consumer-Resource Population Dynamics')
     f2.savefig('../Results/LV4_model2.pdf')
 
 
@@ -90,7 +88,7 @@ def main(argv):
         t = int(argv[6])
         pops = runsim_norm(t,params)
 
-        txtstr = ("r = %f\na = %f\nz = %f\ne = %f\nK = %f" %(params[0],params[1],params[2],params[3],params[4])) 
+        txtstr = ("r = {:.2f} a = {:.2f} z = {:.2f} e = {:.2f} K = {:.2f}".format(params[0],params[1],params[2],params[3],params[4])) 
 
         # defining txt to plot
         plot_norm(pops,t,txtstr)
@@ -102,9 +100,8 @@ def main(argv):
         params = (1,0.1,0.1,0.1,100)
         t = 500
         pops = runsim_norm(t,params)
-        print("ran_sim")
 
-        txtstr = ("r = %f\na = %f\nz = %f\ne = %f\nK = %f" %(params[0],params[1],params[2],params[3],params[4])) 
+        txtstr = ("r = {:.2f} a = {:.2f} z = {:.2f} e = {:.2f} K = {:.2f}".format(params[0],params[1],params[2],params[3],params[4])) 
         
         # defining txt to plot
         plot_norm(pops,t,txtstr)

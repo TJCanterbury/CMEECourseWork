@@ -2,8 +2,8 @@
 
 """Recieves inputs from csv of tree mesurments and outputs tree height"""
 
-__appname__ = 'get_TreeHeigt.py'
-__author__ = '[Alex Chan (hhc4317@ic.ac.uk)]'
+__appname__ = 'get_TreeHeight.py'
+__author__ = 'CMEE Group 1'
 __version__= '0.0.1'
 __license__ = "License for this code/program"
 
@@ -48,11 +48,15 @@ def Filename(path):
 
 def main(argv):
     """Main function that is ran"""
-    df = readwritecsv(argv[1])
-    Name = Filename(argv[1])
+    if len(argv) == 2:
+        file= argv[1]
+    else:        
+        print("No input file found, using default")
+        file = "../Data/trees.csv"
     
+    df = readwritecsv(file)
+    Name = Filename(file)
     df.to_csv('../Results/'+Name+'_treeHTs_Python.csv', header=True)
-
 
 
 if __name__ == "__main__":

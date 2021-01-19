@@ -3,7 +3,7 @@
 """simple alignement program for 2 DNA sequences"""
 
 __appname__ = 'align_seqs.py'
-__author__ = 'Tristan JC (tjc19@ic.ac.uk)'
+__author__ = 'CMEE Group 1'
 __version__ = '0.0.1'
 
 ## imports ##

@@ -1,5 +1,5 @@
 #!/bin/bash
-#Author: Amisha a.bhojwani20@imperial.ac.uk
+#Author: CMEE Group 1
 #Script: vectorize_timer.sh
 #Desc: timing the vectorised and non vectorised versions of two scripts in both R and Python
 #Arguments: none

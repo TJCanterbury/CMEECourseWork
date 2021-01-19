@@ -17,6 +17,7 @@ def is_an_oak(name):
 
     
 def main(argv): 
+    """Main function that runs"""
     f = open('../Data/TestOaksData.csv','r')
     g = open('../Data/JustOaksData.csv','w')
     taxa = csv.reader(f)
@@ -35,4 +36,5 @@ def main(argv):
     return 0
     
 if (__name__ == "__main__"):
+    """Ensures main functions runs when script is called"""
     status = main(sys.argv)

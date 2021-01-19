@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """Translating a matrix based R script to python"""
-__author__ = 'Amisha (a.bhojwani20@imperial.ac.uk)'
+__author__ = 'CMEE Group 1'
 __version__ = '0.0.1'
 
 import numpy as np
