@@ -7,7 +7,7 @@ For the Code directory I will go into more detail.
 
 ### In Code you shall find:
  
- Script       | Description
+ File       | Description
  ------------- | -------------
  apply1.R | Examples of how to use the apply function.
  apply2.R | More apply function examples.
