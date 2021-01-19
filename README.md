@@ -28,11 +28,11 @@
 * Biopython
 
 ## Directrory Structure:
- Directory       | Description
+ Directory       | Contents
  ------------- | -------------
- CMEEMiniProject | Contains data and scripts for generating a report on Temperature Performance curves (TPCs).
- Feedback | Contains weekly feedback.
- Week1 | Contains files written in Week1 of the course, of which was focused on use of bash scripting.
- Week2 | contains code from 2nd week, of which was focused on python. 
- Week3 | contains code from 3rd week, of which was focused on R and data visualisation.
- Week7 | contains code from 7th week, of which was focused on more advanced python.
+ CMEEMiniProject | Data and scripts for generating a report on Temperature Performance curves (TPCs).
+ Feedback | Weekly feedback.
+ Week1 | Files written in Week1 of the course, of which was focused on use of bash scripting.
+ Week2 | Files written in week 2, of which was focused on python. 
+ Week3 | Files written in week 3, of which was focused on R and data visualisation.
+ Week7 | Files written in week 7, of which was focused on more advanced python.
