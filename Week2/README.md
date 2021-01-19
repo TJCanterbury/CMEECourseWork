@@ -1,4 +1,7 @@
 # Welcome to Week2
+
+## Directory Structure:
+
 Sandbox is for personal fun and in the Data directory you will find files holding relevant data to the scripts in Code and for use in Sandbox
 For the Code directory I will go into more detail.
 
@@ -7,6 +10,8 @@ For the Code directory I will go into more detail.
  Script       | Description
  ------------- | -------------
  align_seqs.py | Aligns 2 sequences from a given fasta file 
+ align_seqs_fasta.py | Similar to align_segs.py except it takes sequences from 2 separate fasta files
+ align_seqs_better.py | Similar to align_seqs_fasta.py except all the equally-best alignments are recorded and saved
  basic_csv | write a file containing only species name and Body mass
  basic_io1.py | prints lines from a file
  basic_io2.py | appends a file
@@ -28,3 +33,4 @@ For the Code directory I will go into more detail.
  using_name.py | showing what name and main are in writing a python program
 
 
+## Dependencies:

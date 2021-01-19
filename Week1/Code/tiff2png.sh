@@ -2,7 +2,7 @@
 
 # Author: Tristan JC tjc19@ic.ac.uk
 # Script: tiff2png.sh
-# Desc: COnverts tif to png
+# Desc: Converts tif to png
 # Arguments: 1 .tif file
 # Date: Oct 2020
 

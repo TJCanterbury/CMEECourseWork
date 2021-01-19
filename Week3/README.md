@@ -1,4 +1,7 @@
 # Welcome to Week3
+
+## Directory Structure:
+
 Sandbox is for personal fun and in the Data directory you will find files holding relevant data to the scripts in Code and for use in Sandbox
 For the Code directory I will go into more detail.
 
@@ -17,6 +20,9 @@ For the Code directory I will go into more detail.
  control_flow.R | demonstrates contropl flow tools in R.
  DataWrang.R | Demonstrates basic datawrangling options in R.
  DataWrangTidy.R | Wrangles some data via tidyverse
+ get_TreeHeight.py | Calculates tree heights for all rows in the tree.csv dataset.
+ get_TreeHeight.R | Calculates tree heights for all rows in the tree.csv dataset.
+ run_get_TreeHeight.sh | Runs both get_TreeHeight.py and get_TreeHeight.R with bash.
  Girko.R | A sim of Girko
  GPDD_Data.R | Maps data onto the world map.
  MyBars.R | Demonstrates annotation of a histogram
@@ -24,6 +30,7 @@ For the Code directory I will go into more detail.
  plotLin.R | makes and exports a ggplot with a linear regression modelled to it.
  PP_Dist.R | Analyses of predator prey data and production of relevant graphs as pdfs.
  PP_Regress.R | Analyses of predator prey data with linear regression and production of relevant graphs as pdfs.
+ PP_Regress_loc.R | Analyses of predator prey data with linear regression, grouped by location and production of relevant graphs as pdfs.
  preallocate.R | Example of how to preallocate for efficient R code
  R_conditionals.R | examples of how to use R conditionals
  Ricker.R | Sim of the ricker model of pop. growth
@@ -33,4 +40,7 @@ For the Code directory I will go into more detail.
  try.R | Examples of try function use
  Vectorize1.R | Demosntrates speed difference after vectorising a function.,
  Vectorize2.R | Vectorisation challenge practical of Samraats code.
+ vectorize1.py | Demosntrates speed difference after vectorising a function in python.
+ vectorize2.py | Vectorisation challenge practical of Samraats code in python.
+ vectorize_timer.sh | runs all Vectorize* scripts for comparison.
 
