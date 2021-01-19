@@ -40,7 +40,7 @@ For the Code directory I will go into more detail.
  try.R | Examples of try function use
  Vectorize1.R | Demosntrates speed difference after vectorising a function.,
  Vectorize2.R | Vectorisation challenge practical of Samraats code.
- vectorize1.py | Demosntrates speed difference after vectorising a function in python.
- vectorize2.py | Vectorisation challenge practical of Samraats code in python.
+ Vectorize1.py | Demosntrates speed difference after vectorising a function in python.
+ Vectorize2.py | Vectorisation challenge practical of Samraats code in python.
  vectorize_timer.sh | runs all Vectorize* scripts for comparison.
 
