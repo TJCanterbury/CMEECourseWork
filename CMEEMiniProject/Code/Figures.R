@@ -1,5 +1,5 @@
-library('tidyverse')
-library('ggplot2')
+suppressMessages(library(tidyverse))
+suppressMessages(library(ggplot2))
 
 #read
 CompareAIC <- read.csv('../Results/res.csv')%>%
@@ -20,7 +20,7 @@ slices <- round(c(sum(CompareAIC$Schoolfield == 1) / n, sum(CompareAIC$Briere ==
 lbls <- c("Sharpe-Schoolfield", "Briere", "Quadratic")
 lbls <- paste(lbls, slices)
 lbls <- paste(lbls,"%",sep="")
-piech <- pie(slices,labels = lbls, col=c('#6820a3', '#649417', '#747474'),
+piech <- pie(slices,labels = lbls, col=c('#6820a3', '#649417', '#ffdb10'),
    main=paste("Number of IDs modelled = ", n))
 print(piech)
 dev.off()

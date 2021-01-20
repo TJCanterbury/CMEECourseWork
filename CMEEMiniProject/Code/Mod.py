@@ -3,7 +3,7 @@
 """ This script can either otuput a plot of a given ID or the AIC results of multiple linear 
 and non linear models of temperature performance curves """
 
-__appname__ = 'npMod.py'
+__appname__ = 'Mod.py'
 __author__ = 'Tristan JC (tjc19@ic.ac.uk)'
 __version__ = '0.0.Godknows'
 
@@ -147,6 +147,14 @@ def variance(data):
 	variance = sum(deviations) / n
 	return variance
 
+def Bad_Mod(data, model, alpha = 0.5):
+	F = variance(model.residual)/variance(data[:,2])
+	p_value = scipy.stats.f.cdf(F, len(data)-1, len(data)-1)
+	if p_value > alpha:
+		return 1
+	else: 
+		return 0
+
 def Mod_it(tmp, resid, starter):
 	""" Generate model and return AIC score and parameter values """
 	#create minimzer object
@@ -171,13 +179,6 @@ def Schoolfield_Model(Data, n):
 				S_Best_Mod = S_Ran_Mod
 		except:
 			pass
-	
-	# Check if bad model:
-	F = variance(S_Best_Mod.residual)/variance(Data[:,2])
-	alpha = 0.05
-	p_value = scipy.stats.f.cdf(F, len(Data)-1, len(Data)-1)
-	if p_value > alpha:
-		return(0,0)
 
 	return(S_Math_Mod, S_Best_Mod)
 
@@ -195,26 +196,12 @@ def Briere_Model(Data, n):
 		except:
 			pass
 
-	# Check if bad model:
-	F = variance(B_Best_Mod.residual)/variance(Data[:,2])
-	alpha = 0.05
-	p_value = scipy.stats.f.cdf(F, len(Data)-1, len(Data)-1)
-	if p_value > alpha:
-		return 0
-	
 	return(B_Best_Mod)
 
 def Linear_Model(Data):
 	""" Build Linear Model of chosen type (eg quadratic, cubic and beyond) and return best fit model """
 	
 	Lin_Mod = Mod_it(Data, residuals_quad, Define_Parameters(['a','b','c'], [2,2,2]))
-	
-	# Check if bad model:
-	F = variance(Lin_Mod.residual)/variance(Data[:,2])
-	alpha = 0.05
-	p_value = scipy.stats.f.cdf(F, len(Data)-1, len(Data)-1)
-	if p_value > alpha:
-		return 0
 	
 	return(Lin_Mod)
 
@@ -225,17 +212,17 @@ def Figure_1(Data, ID, Mod1, Mod2, Mod3, Colour, minT, maxT, shifty):
 	# Schoolfield:
 	residual_smooth = residuals_school(Mod1.params, t_vec, N_vec)
 	predictedVal = residual_smooth + N_vec
-	p.plot(t_vec, (predictedVal - shifty), Colour[1], linestyle = '--', linewidth = 1)
+	p.plot(t_vec, (predictedVal - shifty), Colour[0], linestyle = '--', linewidth = 1)
 
 	#Briere:
 	residual_smooth = residuals_Briere(Mod2.params, t_vec, N_vec)
 	predictedVal = residual_smooth + N_vec
-	p.plot(t_vec, (predictedVal - shifty), Colour[2], linestyle = '--', linewidth = 1)
+	p.plot(t_vec, (predictedVal - shifty), Colour[1], linestyle = '--', linewidth = 1)
 
 	#Quad:
 	residual_smooth = residuals_quad(Mod3.params, t_vec, N_vec)
 	predictedVal = residual_smooth + N_vec
-	p.plot(t_vec, (predictedVal - shifty), Colour[3], linestyle = '--', linewidth = 1)
+	p.plot(t_vec, (predictedVal - shifty), Colour[2], linestyle = '--', linewidth = 1)
 
 	p.plot(Data[:,1], (Data[:,2] - shifty), 'b+')
 	p.legend(fontsize = 10, labels = ['Schoolfield', 'Briere', 'Quadratic', 'Data'])
@@ -243,10 +230,10 @@ def Figure_1(Data, ID, Mod1, Mod2, Mod3, Colour, minT, maxT, shifty):
 	p.ylabel('Original Trait Valaue', fontsize = 10)
 	p.ticklabel_format(style='scientific', scilimits=[0,3])
 	p.title('ID :' + str(ID))
-	p.savefig('../Results/plot110.pdf')
+	p.savefig('../Results/Figure1.pdf')
 	p.close()
 
-def ith_Result(Data, ID, n = 10, plot = 257):
+def ith_Result(Data, ID, n = 10, plot = False, alpha = 0.5):
 	""" Takes Data, fits the Schoolfield, Briere and Quadratic models to the data for the given ID;
 		Then Outputs parameter estimates, AIC scores and temperature range for a given ID """
 	tmp = Data[Data[:,0]==ID]
@@ -272,26 +259,28 @@ def ith_Result(Data, ID, n = 10, plot = 257):
 	maxT = max(tmp[:,1])
 
 	# Generate Models:
+	# Schoolfield:
+	Math_Schoolfield_mod, Best_Schoolfield_mod = Schoolfield_Model(tmp, n)
+	#If modelling failed return zeros
+	if Bad_Mod(tmp, Best_Schoolfield_mod, alpha):
+		print("ID: ", ID, " was poorly modelled by the Sharpe-Schoolfield model")
+		return Scores 
+
 	#Quad:
 	Quad_mod = Linear_Model(tmp)
 	#If modelling failed return zeros
-	if Quad_mod == 0:
-		return Scores 
+	#if Bad_Mod(tmp, Quad_mod, alpha):
+	#	return Scores 
 
 	#Briere:
 	Briere_mod = Briere_Model(tmp, n)
 	#If modelling failed return zeros
-	if Briere_mod == 0:
-		return Scores 
+	#if Bad_Mod(tmp, Briere_mod, alpha):
+	#	return Scores 
 
-	# Schoolfield:
-	Math_Schoolfield_mod, Best_Schoolfield_mod = Schoolfield_Model(tmp, n)
-	#If modelling failed return zeros
-	if Best_Schoolfield_mod == 0:
-		return Scores 
-
-	if ID == plot:
+	if plot:
 		Figure_1(tmp, ID, Best_Schoolfield_mod, Briere_mod, Quad_mod, Colour, minT, maxT, shifty)
+		return
 
 	# Allocate scores:
 	Scores[0] = ID
@@ -326,24 +315,30 @@ def main(argv):
 	TempResp = pd.read_csv(argv[1], usecols = fields, dtype={'ID': int, 'ConTemp': float, 'OriginalTraitValue': float}) 
 	TempResp = np.array(TempResp, dtype = float)
 	TempResp[:,[1, 2]] = TempResp[:,[2, 1]]
-	Num = int(argv[3])
+	Num = 903
 
-	# Option Stats: Record best AICs for each ID
-	paras = np.zeros((Num-1, 18))
-	print('Schoolfield', 'Briere', 'Quadratic', end = '\n')
-	for i in range(1, Num):
-		# For each ID attempt to fit every model, if this fails move on to next ID
-		try:
-			paras[i-1,:] = ith_Result(TempResp, i, plot = int(argv[2]))
-			if max(paras[i-1, 1:4]) == 1:
-				print('ID: ', i, ' ', 'Schoolfield AIC: ', paras[i-1,1], 'Briere AIC: ', paras[i-1,2], 'Quadratic AIC: ', paras[i-1,3], end="\n")
-		except:
-			pass
-	
-	Paras = pd.DataFrame(paras, columns = ['ID', 'Schoolfield', 'Briere', 'Quadratic', 'Range', 'Density', 'B0', 'El', 'Eh', 'Tl', 'Th', 'E', 'B01', 'El1', 'Eh1', 'Tl1', 'Th1', 'E1'])
-	Paras.to_csv('../Results/res.csv')
-	print('\n')
-	return 0
+	if len(argv) == 3:
+		# Option Figure 1: plot figure 1
+		ith_Result(TempResp, int(argv[2]), alpha=0.05, plot = True)
+		return 0
+
+	if len(argv) == 2:
+		# Option Stats: Record best AICs for each ID
+		paras = np.zeros((Num-1, 18))
+		print('Schoolfield', 'Briere', 'Quadratic', end = '\n')
+		for i in range(1, Num):
+			# For each ID attempt to fit every model, if this fails move on to next ID
+			try:
+				paras[i-1,:] = ith_Result(TempResp, i, alpha=0.05)
+				if max(paras[i-1, 1:4]) == 1:
+					print('ID: ', i, ' ', 'Schoolfield AIC: ', paras[i-1,1], 'Briere AIC: ', paras[i-1,2], 'Quadratic AIC: ', paras[i-1,3], end="\n")
+			except:
+				pass
+		
+		Paras = pd.DataFrame(paras, columns = ['ID', 'Schoolfield', 'Briere', 'Quadratic', 'Range', 'Density', 'B0', 'El', 'Eh', 'Tl', 'Th', 'E', 'B01', 'El1', 'Eh1', 'Tl1', 'Th1', 'E1'])
+		Paras.to_csv('../Results/res.csv')
+		print('\n')
+		return 0
 
 if __name__ == "__main__": 
 	"""Makes sure the "main" function is called from command line"""  

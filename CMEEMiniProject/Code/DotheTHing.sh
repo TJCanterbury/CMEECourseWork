@@ -5,11 +5,17 @@
 # Arguments: None
 # Date: Nov 2020
 
-#Generate results and Figure 1 using ID 257
-python3 Mod.py '../Data/ThermRespData.csv' 257 903
+#Generate figure 1 using ID 257
+python3 Mod.py '../Data/ThermRespData.csv' 831
 
-#Other Figures
-Rscript Seethething.R
+#Generate results
+#python3 Mod.py '../Data/ThermRespData.csv'
 
-#Report
-bash CompileLaTeX.sh Temp.tex 
+#Generate Other Figures
+Rscript Figures.R
+
+#Generate .tex file
+R CMD BATCH Generatetex.R
+
+#Generate report
+bash CompileLaTeX.sh Report.tex 

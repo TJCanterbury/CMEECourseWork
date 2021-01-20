@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Author: Tristan JC tjc19@ic.ac.uk
 # Script: CompileLaTeX.sh
 # Description: compiles tex file giving you a pdf
@@ -41,3 +40,5 @@ rm *.bbl
 rm *.blg
 rm *.fls
 rm *.fdb*
+rm *.Rout
+rm *concordance*

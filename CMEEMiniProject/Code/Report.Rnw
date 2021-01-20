@@ -2,6 +2,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{fixltx2e}
+\usepackage{longtable}
+\usepackage{booktabs}
 \title{Temperature perfomance curves - better models needed for comparison}
 \author{Tristan J Canterbury}
 \date{30/11/2020}
@@ -33,10 +35,9 @@
   It is believed by metabolic theorists that TPCs reflect the direct effects 
   of temperature on the biochemical reactions relevant to the trait measured and I'd argue the consistency in this relationship between taxa \cite{Dell2011a}, including 
   very simple organisms such as bacteria with well known policy implications in food hygeine \cite{Zwietering1991b}, suggests that this may be true. 
-  The thinking behind our current best models of TPCs are based on the understanding that much of the metabolic reactions in living organisms are 
-  mediated by catalytic enzymes. \\
+  It seems to be a fundamental feature of life on earth. \\
   The Sharpe-Schoolfield model is a mechanistic model that has been derived for the purpose of regressional 
-  analysis of TPCs, under the above assumption that they are the product of the behaviour of catalytic enzymes under different temperatures and that we can make 
+  analysis of TPCs, under the assumption that they are the product of the behaviour of catalytic enzymes under different temperatures and that we can make 
   estimates of the parameters governing this behaviour through measurements of the shape of TPCs \cite{Schoolfield1981}. The shapes of enzymes are not 
   rigid and may denature at high temperatures and so reaction rate is sharply reduced. We see a more gentle decrease in performance at lower temperatures as the probability of a high energy collision 
   between reactant and enzyme decreases. We define the threshold energy requirement for successful reaction to be the activation energy; it is believed that
@@ -126,7 +127,7 @@
   the different kinds of biological trait data being modelled.
   
   \begin{figure}[]
-    \includegraphics[width=\textwidth]{../Results/plot110.pdf}
+    \includegraphics[width=\textwidth]{../Results/Figure1.pdf}
     Figure 1. Showing example of differences in fit between the models.
   \end{figure}
 
@@ -145,6 +146,26 @@
     \includegraphics[width=\textwidth]{../Results/Params.pdf}
     Figure 4. Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
   \end{figure}
+
+  \begin{table}
+    Table 1: Best fit parameter values for the Sharpe-Schoolfield model
+    <<Sharpe-Schoolfield Parameter Summary, echo=FALSE, results='asis'>>=
+    suppressMessages(library(tidyverse))
+    suppressMessages(library(xtable))
+    suppressMessages(library(papeR))
+
+    Res_Data <- read.csv('../Results/res.csv') %>%
+      filter(Schoolfield + Briere + Quadratic > 0) %>%
+      select(B0, E, El, Eh, Tl, Th)
+
+    xt = xtable(summarize(Res_Data))
+    suppressMessages(print(xt, 
+        tabular.environment = "longtable",
+        floating = FALSE
+        ))
+    @
+  \end{table}
+
 
   \section{Discussion}
 
