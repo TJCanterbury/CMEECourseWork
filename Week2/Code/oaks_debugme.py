@@ -12,7 +12,28 @@ import sys
 
 #Define function
 def is_an_oak(name):
-    """ Returns True if name is starts with 'quercus' """
+    """ Returns True if name is starts with 'quercus' 
+     >>> is_an_oak('Quercus')
+    True
+
+    >>> is_an_oak('Pinus')
+    False
+
+    >>> is_an_oak('Quercus robur')
+    True
+
+    >>> is_an_oak('Quercuss')
+    True
+
+    >>> is_an_oak('Quercuss robur')
+    False
+
+    >>> is_an_oak('QQuercus')
+    False
+
+    >>> is_an_oak('QUERCUS')
+    True
+    """
     return name.lower().startswith('quercus')
 
     

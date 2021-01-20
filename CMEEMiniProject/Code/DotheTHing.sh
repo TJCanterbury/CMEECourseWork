@@ -9,7 +9,7 @@
 python3 Mod.py '../Data/ThermRespData.csv' 831
 
 #Generate results
-#python3 Mod.py '../Data/ThermRespData.csv'
+python3 Mod.py '../Data/ThermRespData.csv'
 
 #Generate Other Figures
 Rscript Figures.R
