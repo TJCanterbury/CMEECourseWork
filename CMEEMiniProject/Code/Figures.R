@@ -1,5 +1,6 @@
 suppressMessages(library(tidyverse))
 suppressMessages(library(ggplot2))
+library(lme4)
 
 #read
 CompareAIC <- read.csv('../Results/res.csv')%>%
@@ -20,7 +21,7 @@ slices <- round(c(sum(CompareAIC$Schoolfield == 1) / n, sum(CompareAIC$Briere ==
 lbls <- c("Sharpe-Schoolfield", "Briere", "Quadratic")
 lbls <- paste(lbls, slices)
 lbls <- paste(lbls,"%",sep="")
-piech <- pie(slices,labels = lbls, col=c('#6820a3', '#649417', '#ffdb10'),
+piech <- pie(slices,labels = lbls, col=c('#8b22e2', '#95dd22', '#ffdb10'),
    main=paste("Number of IDs modelled = ", n))
 print(piech)
 dev.off()
@@ -28,25 +29,35 @@ dev.off()
 #Plot Range
 pdf("../Results/Rangeplot.pdf")
 Range <- qplot(Range, AIC, data = ComAIC, geom = c("point", "smooth"), 
-      colour = Model, ylab = 'Prob(min vs. i)', xlab = 'Temperature Range (K)', ylim = c(0,1)) 
+      colour = Model, ylab = 'Prob(min vs. i)', alpha = 0.5,
+      xlab = 'Temperature Range (K)') 
+print(Range)
+dev.off()
+
+nplotdata <- ComAIC %>%
+    filter(n < 200)
+pdf("../Results/nplot.pdf")
+Range <- qplot(log(n), AIC, data = nplotdata, geom = c("point", "smooth"), 
+      colour = Model, ylab = 'Prob(min vs. i)', alpha = 0.5,
+      xlab = 'Sample Size (log)')
 print(Range)
 dev.off()
 
 group_parameter <- function(a, b, param){
-    a <- data.frame('Value' = a, 'Group' = rep('Mathematically Estimated', length(a)))
-    b <- data.frame('Value' = b, 'Group' = rep('Best Fit', length(b)))
+    a <- data.frame("Value" = a, "Group" = rep("Mathematically Estimated", length(a)))
+    b <- data.frame("Value" = b, "Group" = rep("Best Fit", length(b)))
     c <- rbind(a, b)
-    c <- data.frame(c, 'Parameter' = param)
+    c <- data.frame(c, "Parameter" = param)
     return(c)
 }
 
 # make data.frame for parameter values
-B0 <- group_parameter(CompareAIC$B01, CompareAIC$B0, 'B0')
-El <- group_parameter(CompareAIC$El1, CompareAIC$El, 'El')
-Eh <- group_parameter(CompareAIC$Eh1, CompareAIC$Eh, 'Eh')
-Tl <- group_parameter(CompareAIC$Tl1, CompareAIC$Tl, 'Tl')
-Th <- group_parameter(CompareAIC$Th1, CompareAIC$Th, 'Th')
-E <- group_parameter(CompareAIC$E1, CompareAIC$E, 'E')
+B0 <- group_parameter(CompareAIC$B01, CompareAIC$B0, "B0")
+El <- group_parameter(CompareAIC$El1, CompareAIC$El, "El")
+Eh <- group_parameter(CompareAIC$Eh1, CompareAIC$Eh, "Eh")
+Tl <- group_parameter(CompareAIC$Tl1, CompareAIC$Tl, "Tl")
+Th <- group_parameter(CompareAIC$Th1, CompareAIC$Th, "Th")
+E <- group_parameter(CompareAIC$E1, CompareAIC$E, "E")
 data <- rbind(B0, El, Eh, Tl, Th, E)
 
 #plot parameter values, both those mathematically estimated and those that gave the best fit

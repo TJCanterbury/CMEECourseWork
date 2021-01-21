@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[fontsize=11pt]{scrartcl}\usepackage[]{graphicx}\usepackage[]{color}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -48,25 +48,77 @@
 \definecolor{errorcolor}{rgb}{1, 0, 0}
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
-\usepackage{alltt}
+\usepackage{alltt}	% KOMA
+
+
+\usepackage[english]{babel}
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
 \usepackage{graphicx}
-\usepackage{amsmath}
+\linespread{1.5}
 \usepackage{fixltx2e}
 \usepackage{longtable}
 \usepackage{booktabs}
-\title{Temperature perfomance curves - better models needed for comparison}
-\author{Tristan J Canterbury}
-\date{30/11/2020}
+\usepackage{lineno}
+
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\makeatletter							% Title
+\def\printtitle{%						
+    {\centering \@title\par}}
+\makeatother									
+
+\makeatletter							% Author
+\def\printauthor{%					
+    {\centering \large \@author}}				
+\makeatother							
+
+% --------------------------------------------------------------------
+% Metadata (Change this)
+% --------------------------------------------------------------------
+\title{	\normalsize \textsc{Word count: 2239} 	% Subtitle
+			\HRule{0.5pt} \\						% Upper rule
+			\LARGE \textbf{\uppercase{Thermal Performance Curves:\\} 
+                      {Effects of Temperature Range on the Performance of a Mechanistic Model}}	% Title
+			\HRule{2pt} \\ [0.5cm]		% Lower rule + 0.5cm spacing
+			\normalsize \today			% Todays date
+		}
+
+\author{
+		Tristan J Canterbury\\	
+		Imperial College London\\	
+		MSc Computational Methods in Ecology and Evolution\\
+        \texttt{tjc19@ic.ac.uk} \\
+}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
-  \maketitle
+
+\linenumbers
+    \thispagestyle{empty}		% Remove page numbering on this page
+
+  \printtitle					% Print the title data as defined above
+      \vfill
+  \printauthor				% Print the author data as defined above
+  \newpage
+  % ------------------------------------------------------------------------------
+  % Begin document
+  % ------------------------------------------------------------------------------
+  \setcounter{page}{1}
 
   \begin{abstract}
-  Here I use model fitting to investigate the validity of the Sharpe-Schoolfield model as a mechanistic model of temperature performance curves 
-  and find that it outperforms 2 phenomological models, the Briere model and a quadratic model.
+  \section{Abstract} 
+  To better anticipate and respond to the observed changes in climate
+  we need a better understanding of the biotic feedback from changes in temperature, and of variation
+  in tolerances between species to changes in temperature. The response of biological traits to temperature is called a 
+  Thermal Performance Curve (TPC) and seems to take a similar shape across taxa, so they appear to be describing something
+  fundamental about the relationship between temperature and life on earth.
+  The purpose of this report is to evaluate the performance of one of our best mechanistic models of TPCs, The
+  Sharpe-Schoolfield model. I find that overall it outperforms 2 phenomological models, the Briere model and a quadratic model, 
+  but for data that spans smaller temperature ranges (< 20 kelvin) the Quadratic Model performed better.
   I believe that the evidence points towards the Sharpe-Schoolfield model being a viable mechanistic model, giving credence
   to metabolic theory, on the grounds that it outperforms 
-  these phenomological models and that the parameter estimates remain within biologically realistic bounds whilst doing so. 
+  these phenomological models, that the better teh data the better the performance and that the parameter estimates 
+  remain within biologically realistic bounds whilst doing so. 
   However, the poor performance of the Briere model, with it being a non-linear 
   model designed for similar data, tells me a better non linear model is required for comparison - because otherwise 
   the Sharpe-Schoolfield model may simply be benefitting from being a good non-linear model with coincidentally believable 
@@ -74,7 +126,7 @@
 
   \end{abstract}
 
-  \section{An Introduction} 
+  \section{Introduction} 
   The ecological importance of temperature across species can be seen in their numerous physiological, morphological and 
   behavioural adaptations for thermoregulation, from insects to marine mammals \cite{Castellini2018,Heinrich2009}, and in the effect of temperature
   on species distributions \cite{Woodward1988,Buckley}. To better anticipate and respond to the observed changes in climate \cite{RoyalSociety}
@@ -96,8 +148,7 @@
   generalised Briere model, which is non-linear; 
   and the other a simple quadratic model which is linear. I shall go into more detail about the nature of all 3 of these models in the models section. \\
 
-
-  \section{The Data}
+  \section{Data}
   The dataset I use broadly holds performance data for photosynthesis and respiration at different temperatures. 
   Photosynthesis and respiration are well understood, vital life processes governing transfers of energy, so very attractive traits for metabolic ecologists,
   and both have some of their reactants and products in the air making them relatively easy targets for study. There is considerable variance 
@@ -108,7 +159,7 @@
   temperatures between species depending on the particular ecologies of the different species but this is not the focus 
   of this report. \\
  
-  \section{The Models}
+  \section{Models}
   I built 3 models for comparison, one being a simple linear quadratic model, one being a Briere model and one being a Sharpe-Schoolfield model.\\
   Linear models are generally the easiest models to generate because there is only one optimal set of coefficients that will model the data. 
   Where we save in computational time and human effort we lose biological meaning (and delayed gratification?). The coefficients we generate 
@@ -159,7 +210,19 @@
   and takes into account the simplicity of the model, measured in number of parameters. I then calculated the 
   proportional difference between the best model for each dataset and the other models. 
 
-  \section{The Results}
+  \section{Computing tools}
+  R was used for plotting figures with the aid of ggplot2 and tidyverse data management. Figures 3 and 4 get their lines and 
+  error bars from the the geom\_smooth argument of the ggplot2 package.
+  R was also used to generate Table 1 within LaTeX using knitr and xtable. \\
+  All modelling was done with python primarily so that I could use the numpy package for faster data management.
+   The lmfit package was used for non linear regression with the least 
+  squares method for all models. Pandas was used for reading in the csv file and generating the results table. 
+  csv was used to output the data to a csv. math was used for maths, matplotlib.pylab was used
+  for Figure 1 and scipy.stats was used for quick straight line regressions which was used 
+  for mathematical estimation of certain parameter values. \\
+  Bash was then used to run all the code in the right order and generate the report.
+
+  \section{Results}
   I found that Schoolfield comes out on top in AIC but the overlap in performance between the models is considerable as shown in Figure 3. 
   In Figure 1 we see an example fit of ID 257 and you can see why Schoolfield 
   might be outperforming the other 2 models. It has a greater flexibility in shape due to the 
@@ -168,15 +231,19 @@
   the Sharpe-Schoolfield Model wins which does not sound that impressive. \\
   Looking deeper into the data however reveals a possible reason, the Quadratic model performs particularly well when the data 
   occupies a smaller range of temperatures, which we see in figure 3. Clearly however the relationship between temperature range and
-  the performances of the different models is not linear, clearly other variables must be having an effect. \\
-  Looking at Figure 4, the best fit parameter values for 
+  the performances of the different models is not linear. The effect of sample size is less interesting, with considerable overlap between the
+  error bounds calculated the by the standard smooth stat function given for ggplots. 
+   \\
+  Looking at Figure 5, the best fit parameter values for 
   the Sharpe-Schoolfield model are usually not so different from the 
   mathematically estimated values and appear biologically plausible except for T\textsubscript{h} and T\textsubscript{l} 
   that show a bimodal distribution in the mathematically estimated parameter values. There is a consistency in best fit parameter values 
   around particular values, save for B\textsubscript{0} which we would expect to vary considerably so that the model will fit to 
-  the different kinds of biological trait data being modelled.
+  the different kinds of biological trait data being modelled. Looking at table 1 we see that there is considerable skew in 
+  the best fit parameter values, so much so that the mean T\textsubscript{h} temperature is lower than the mean T\textsubscript{l} 
+  temperature. The median values seem to be more realistic however.
   
-  \begin{figure}[]
+  \begin{figure}[h]
     \includegraphics[width=\textwidth]{../Results/Figure1.pdf}
     Figure 1. Showing example of differences in fit between the models.
   \end{figure}
@@ -193,26 +260,32 @@
   \end{figure}
 
   \begin{figure}[]
+    \includegraphics[width=\textwidth]{../Results/nplot.pdf}
+    Figure 4. Comparing the effect of the log of sample size on AIC of the different models in terms of prob(min vs. i). 
+    prob(min vs. i) is the probability of the model to minimise information loss as much as the the best of the 3 models.
+  \end{figure}
+
+  \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Params.pdf}
-    Figure 4. Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
+    Figure 5. Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
   \end{figure}
 
   \begin{table}
     Table 1: Best fit parameter values for the Sharpe-Schoolfield model
 \begin{center}
 % latex table generated in R 3.6.3 by xtable 1.8-4 package
-% Wed Jan 20 20:53:26 2021
+% Thu Jan 21 00:10:03 2021
 \begin{longtable}{lrrrrrrrrrr}
   \toprule
    & N &   & Mean & SD &   & Min & Q1 & Median & Q3 & Max \\ 
     \cmidrule{2-2}  \cmidrule{4-5} \cmidrule{7-11}
  \endhead
-B0 &   7 &  & 195.22 & 363.50 &  & 0.12 & 1.04 & 4.26 & 204.61 & 950.84 \\ 
-  E &   7 &  & 0.09 & 0.37 &  & $-$0.68 & 0.06 & 0.21 & 0.27 & 0.46 \\ 
-  El &   7 &  & $-$0.19 & 29.94 &  & $-$50.00 & $-$7.76 & $-$2.86 & 9.19 & 48.66 \\ 
-  Eh &   7 &  & 21.96 & 22.73 &  & $-$1.30 & 1.32 & 19.16 & 41.60 & 50.00 \\ 
-  Tl &   7 &  & 348.38 & 121.12 &  & 241.35 & 291.27 & 301.07 & 357.24 & 599.21 \\ 
-  Th &   7 &  & 305.83 & 4.16 &  & 302.87 & 303.63 & 304.91 & 305.40 & 314.99 \\ 
+B0 & 584 &  & 116.99 & 271.86 &  & 0.00 & 2.32 & 13.95 & 55.46 & 1000.00 \\ 
+  E & 584 &  & 0.64 & 1.51 &  & $-$3.82 & $-$0.01 & 0.36 & 0.75 & 10.00 \\ 
+  El & 584 &  & $-$1.06 & 22.00 &  & $-$50.00 & $-$6.89 & $-$1.29 & 4.28 & 50.00 \\ 
+  Eh & 584 &  & 6.19 & 15.42 &  & $-$49.99 & 0.98 & 2.13 & 7.01 & 50.00 \\ 
+  Tl & 584 &  & 293.12 & 113.23 &  & 0.04 & 274.87 & 286.44 & 311.10 & 599.98 \\ 
+  Th & 584 &  & 292.42 & 63.86 &  & 0.01 & 287.20 & 302.60 & 312.79 & 590.25 \\ 
    \bottomrule
 \end{longtable}
 \end{center}
@@ -222,35 +295,37 @@ B0 &   7 &  & 195.22 & 363.50 &  & 0.12 & 1.04 & 4.26 & 204.61 & 950.84 \\
 
   \section{Discussion}
 
+  I found a strong relationship between temperature range and the performance of the Sharpe-Schoolfield model, 
+  as shown in Figure 3, so I will first discuss why this might be. \\
   My code starts with estimated parameter values based on mathematical models of the data and 
   so the benefit of more complete data for the Schoolfield model may well be that it allows more 
   accurate estimation of these parameters. In particular estimation of B\textsubscript{0} is 
-  difficult when there is a lack of low temperature data. I used temperature range as a simplistic way of measuring
+  difficult when there is a lack of low temperature data.  Figure 5 however shows that particularly for T\textsubscript{l} 
+  and T\textsubscript{h} the mathematical estimates were way off for much of the data. I used temperature range as a simplistic way of measuring
   the completeness of the data but categorising the data by whether it had sufficient low temperature data or high temperature data 
-  and categorising the overall shape of the curves using polynomial models would be useful for understanding why exactly temperature 
-  range has the effect it does in this data.\\
+  and categorising the overall shape of the curves using polynomial models might have shed more light on why exactly temperature 
+  range has the effect it does in this data. I believe however that the real reason for this pattern maybe that with a greater temperature
+  range the data becomes better at describing reality and so this improved performance in the mechanistic model is reflecting the
+  improved realism of the data. It follows then that the Sharpe-Schoolfield model must be a good model of the broader pattern of 
+  TPCs but cannot account for deviations from that pattern at smaller scales that come from other, perhaps stochastic, processes. \\
   The performance of the Briere model is surprisingly low for it being a non-linear model designed
   for the modelling of temperature performance curves. We do see improved performance for more complete data but overall 
   a linear quadratic model performs better. The quadratic model benefits from having fewer parameters and 
   we would expect it to better model straight lines and other irregular temperature performance curves, 
-  which you would expect to find amongst incomplete datasets. Still the poor performance of the Briere model is unhelpful for evaluating the performance of the 
-  Sharpe-Schoolfield model. It may be that when the data is good Sharpe-Schoolfield wins, when the data is bad quadratic wins, 
+  which you would expect to find amongst smaller ranges. 
+  It may be that when the data is good Sharpe-Schoolfield wins, when the data is bad quadratic wins, 
   and Briere sits somewhere in the middle in either scenario.\\
   Whether the lack of alternative mechanistic models is indicative of a lack of possible alternative mechanisms 
   or an ignorance of the existence of such models, is not known to me. Using model fitting to determine whether a 
   model is mechanistic seems counterintuitive, for it does not tell me why the model fits the data, only that 
-  it is better than alternative models, so it is important to have as many models as possible to compare. The alternative models 
-  in this case are also only expected to be phenomological
-  and so were never probable alternatives from the beginning however they do serve their role as indicators of the 
-  performance of this model, as we would expect these phenomological models to outperform a false mechanistic model.\\
+  it is better than alternative models. \\
   These results do point towards the Sharpe-Schoolfield model being a viable mechanistic model, giving credence
   to metabolic theory, on the grounds that it outperforms 
   these phenomological models and that the parameter estimates remain within biologically realistic bounds whilst doing so. 
   However, the poor performance of the Briere model, with it being a non-linear 
   model designed for similar data, tells me a better non linear model is required for comparison - because otherwise 
   the Sharpe-Schoolfield model may simply be benefitting from being a good non-linear model with coincidentally believable 
-  parameter values. 
-
+  parameter values.
 
   \bibliographystyle{plain}
   \bibliography{CMEE.bib}

@@ -42,3 +42,4 @@ rm *.fls
 rm *.fdb*
 rm *.Rout
 rm *concordance*
+rm .RData
