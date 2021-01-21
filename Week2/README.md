@@ -32,5 +32,3 @@ For the Code directory I will go into more detail.
  tuple.py | function for printing bird names and masses from tuple
  using_name.py | showing what name and main are in writing a python program
 
-
-## Dependencies:
