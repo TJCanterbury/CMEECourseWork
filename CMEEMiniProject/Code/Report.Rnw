@@ -67,12 +67,12 @@
   but for data that spans smaller temperature ranges (< 20 kelvin) the Quadratic Model performed better.
   I believe that the evidence points towards the Sharpe-Schoolfield model being a viable mechanistic model, giving credence
   to metabolic theory, on the grounds that it outperforms 
-  these phenomological models, that the better teh data the better the performance and that the parameter estimates 
-  remain within biologically realistic bounds whilst doing so. 
-  However, the poor performance of the Briere model, with it being a non-linear 
-  model designed for similar data, tells me a better non linear model is required for comparison - because otherwise 
-  the Sharpe-Schoolfield model may simply be benefitting from being a good non-linear model with coincidentally believable 
-  parameter values.  
+  these phenomological models, that the better the data in terms of temperature range the better the performance 
+  and that the parameter estimates 
+  remain within biologically realistic bounds whilst doing so. Attempts to make better alternative non-linear models, 
+  phenomological or mechanistic, would be valuable for comparison. I would advise future study of temperature performance curves
+  to use greater temperature ranges if they intend to use the Sharpe-Schoolfield model, with sample size seeming to be substantially
+  less important.
 
   \end{abstract}
 
@@ -161,7 +161,7 @@
   proportional difference between the best model for each dataset and the other models. 
 
   \section{Computing tools}
-  R was used for plotting figures with the aid of ggplot2 and tidyverse data management. Figures 3 and 4 get their lines and 
+  R was used for plotting figures with the aid of ggplot2 and tidyverse for straightforward visualisation and data management. Figures 3 and 4 get their lines and 
   error bars from the the geom\_smooth argument of the ggplot2 package.
   R was also used to generate Table 1 within LaTeX using knitr and xtable. \\
   All modelling was done with python primarily so that I could use the numpy package for faster data management.
@@ -253,8 +253,9 @@
 
   \section{Discussion}
 
-  I found a strong relationship between temperature range and the performance of the Sharpe-Schoolfield model, 
-  as shown in Figure 3, so I will first discuss why this might be. \\
+  I found a strong relationship between temperature range and the performance of the Sharpe-Schoolfield model,
+  that does not seem to be explainable by sample size alone, 
+  as you can see if you compare figures 3 and 4. So I will first discuss why this might be. \\
   My code starts with estimated parameter values based on mathematical models of the data and 
   so the benefit of more complete data for the Schoolfield model may well be that it allows more 
   accurate estimation of these parameters. In particular estimation of B\textsubscript{0} is 
@@ -265,25 +266,29 @@
   range has the effect it does in this data. I believe however that the real reason for this pattern maybe that with a greater temperature
   range the data becomes better at describing reality and so this improved performance in the mechanistic model is reflecting the
   improved realism of the data. It follows then that the Sharpe-Schoolfield model must be a good model of the broader pattern of 
-  TPCs but cannot account for deviations from that pattern at smaller scales that come from other, perhaps stochastic, processes. \\
+  TPCs but cannot account for deviations from that pattern at smaller scales that result 
+  from less consequential variation, stochasticity and observational error. \\
   The performance of the Briere model is surprisingly low for it being a non-linear model designed
   for the modelling of temperature performance curves. We do see improved performance for more complete data but overall 
   a linear quadratic model performs better. The quadratic model benefits from having fewer parameters and 
   we would expect it to better model straight lines and other irregular temperature performance curves, 
   which you would expect to find amongst smaller ranges. 
   It may be that when the data is good Sharpe-Schoolfield wins, when the data is bad quadratic wins, 
-  and Briere sits somewhere in the middle in either scenario.\\
+  and Briere sits somewhere in the middle in either scenario. So attempts to make better alternative non-linear models, 
+  phenomological or mechanistic, would be valuable for comparison.\\
   Whether the lack of alternative mechanistic models is indicative of a lack of possible alternative mechanisms 
   or an ignorance of the existence of such models, is not known to me. Using model fitting to determine whether a 
   model is mechanistic seems counterintuitive, for it does not tell me why the model fits the data, only that 
   it is better than alternative models. \\
-  These results do point towards the Sharpe-Schoolfield model being a viable mechanistic model, giving credence
+  I believe that the evidence points towards the Sharpe-Schoolfield model being a viable mechanistic model, giving credence
   to metabolic theory, on the grounds that it outperforms 
-  these phenomological models and that the parameter estimates remain within biologically realistic bounds whilst doing so. 
-  However, the poor performance of the Briere model, with it being a non-linear 
-  model designed for similar data, tells me a better non linear model is required for comparison - because otherwise 
-  the Sharpe-Schoolfield model may simply be benefitting from being a good non-linear model with coincidentally believable 
-  parameter values.
+  these phenomological models, that the better the data in terms of temperature range the better the performance 
+  and that the parameter estimates 
+  remain within biologically realistic bounds whilst doing so. Attempts to make better alternative non-linear models, 
+  phenomological or mechanistic, would be valuable for comparison. I would advise future study of temperature performance curves
+  to use greater temperature ranges if they intend to use the Sharpe-Schoolfield model, with sample size seeming to be substantially
+  less important. \\
+  
 
   \bibliographystyle{plain}
   \bibliography{CMEE.bib}
