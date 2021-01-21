@@ -27,6 +27,16 @@
 * doctest
 * Biopython
 
+### LaTeX Packages:
+* babel
+* microtype
+* amsmath
+* graphicx
+* fixltx2e
+* longtable
+* booktabs
+* lineno
+
 ## Directrory Structure:
  Directory       | Contents
  ------------- | -------------

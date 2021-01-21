@@ -48,7 +48,7 @@
 \definecolor{errorcolor}{rgb}{1, 0, 0}
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
-\usepackage{alltt}	% KOMA
+\usepackage{alltt}	
 
 
 \usepackage[english]{babel}
@@ -245,36 +245,48 @@
   
   \begin{figure}[h]
     \includegraphics[width=\textwidth]{../Results/Figure1.pdf}
-    Figure 1. Showing example of differences in fit between the models.
+    \begin{center}
+    \textbf{Figure 1.} Showing example of differences in fit between the models.
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/piechart.pdf}
-    Figure 2. The best AIC scores grouped by their respective model and represented as percentages. 
+    \begin{center}
+    \textbf{Figure 2.} The best AIC scores grouped by their respective model and represented as percentages. 
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Rangeplot.pdf}
-    Figure 3. Comparing the effect of temperature range on AIC of the different models in terms of prob(min vs. i). 
+    \begin{center}
+    \textbf{Figure 3.} Comparing the effect of temperature range on AIC of the different models in terms of prob(min vs. i). 
     prob(min vs. i) is the probability of the model to minimise information loss as much as the the best of the 3 models.
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/nplot.pdf}
-    Figure 4. Comparing the effect of the log of sample size on AIC of the different models in terms of prob(min vs. i). 
+    \begin{center}
+    \textbf{Figure 4.} Comparing the effect of the log of sample size on AIC of the different models in terms of prob(min vs. i). 
     prob(min vs. i) is the probability of the model to minimise information loss as much as the the best of the 3 models.
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Params.pdf}
-    Figure 5. Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
+    \begin{center}
+    \textbf{Figure 5.} Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
+    \end{center}
   \end{figure}
 
   \begin{table}
-    Table 1: Best fit parameter values for the Sharpe-Schoolfield model
+    \begin{center}
+    \textbf{Table 1:} Best fit parameter values for the Sharpe-Schoolfield model
+    \end{center}
 \begin{center}
 % latex table generated in R 3.6.3 by xtable 1.8-4 package
-% Thu Jan 21 00:10:03 2021
+% Thu Jan 21 18:35:06 2021
 \begin{longtable}{lrrrrrrrrrr}
   \toprule
    & N &   & Mean & SD &   & Min & Q1 & Median & Q3 & Max \\ 
@@ -291,7 +303,6 @@ B0 & 584 &  & 116.99 & 271.86 &  & 0.00 & 2.32 & 13.95 & 55.46 & 1000.00 \\
 \end{center}
 
   \end{table}
-
 
   \section{Discussion}
 

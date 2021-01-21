@@ -1,9 +1,9 @@
-\documentclass[fontsize=11pt]{scrartcl}	% KOMA
+\documentclass[fontsize=11pt]{scrartcl}	
 
 
 \usepackage[english]{babel}
 \usepackage[protrusion=true,expansion=true]{microtype}	
-\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \linespread{1.5}
 \usepackage{fixltx2e}
@@ -195,33 +195,45 @@
   
   \begin{figure}[h]
     \includegraphics[width=\textwidth]{../Results/Figure1.pdf}
-    Figure 1. Showing example of differences in fit between the models.
+    \begin{center}
+    \textbf{Figure 1.} Showing example of differences in fit between the models.
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/piechart.pdf}
-    Figure 2. The best AIC scores grouped by their respective model and represented as percentages. 
+    \begin{center}
+    \textbf{Figure 2.} The best AIC scores grouped by their respective model and represented as percentages. 
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Rangeplot.pdf}
-    Figure 3. Comparing the effect of temperature range on AIC of the different models in terms of prob(min vs. i). 
+    \begin{center}
+    \textbf{Figure 3.} Comparing the effect of temperature range on AIC of the different models in terms of prob(min vs. i). 
     prob(min vs. i) is the probability of the model to minimise information loss as much as the the best of the 3 models.
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/nplot.pdf}
-    Figure 4. Comparing the effect of the log of sample size on AIC of the different models in terms of prob(min vs. i). 
+    \begin{center}
+    \textbf{Figure 4.} Comparing the effect of the log of sample size on AIC of the different models in terms of prob(min vs. i). 
     prob(min vs. i) is the probability of the model to minimise information loss as much as the the best of the 3 models.
+    \end{center}
   \end{figure}
 
   \begin{figure}[]
     \includegraphics[width=\textwidth]{../Results/Params.pdf}
-    Figure 5. Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
+    \begin{center}
+    \textbf{Figure 5.} Both mathematically estimated and best fit Parameter values for the Sharpe-Schoolfield model.
+    \end{center}
   \end{figure}
 
   \begin{table}
-    Table 1: Best fit parameter values for the Sharpe-Schoolfield model
+    \begin{center}
+    \textbf{Table 1:} Best fit parameter values for the Sharpe-Schoolfield model
+    \end{center}
     <<Sharpe-Schoolfield Parameter Summary, echo=FALSE, results='asis'>>=
     suppressMessages(library(tidyverse))
     suppressMessages(library(xtable))
